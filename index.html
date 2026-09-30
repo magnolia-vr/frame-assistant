@@ -120,6 +120,25 @@ code, .file { font-family: var(--font-mono); font-size: .86em; background: var(-
 .news time, .news .v { font-family: var(--font-mono); font-size: 13px; color: var(--muted); font-variant-numeric: tabular-nums; }
 .news b { display: block; }
 
+/* Question form */
+.qa { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 18px; display: grid; gap: 12px; margin-top: 12px; }
+.qa-row { display: grid; gap: 4px; min-width: 0; }
+.qa-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+.qa label { font-weight: 700; font-size: 14px; }
+.qa input, .qa select, .qa textarea { font: inherit; font-size: 15px; color: var(--ink); background: var(--bg); border: 1px solid var(--line); border-radius: 6px; padding: 8px 10px; width: 100%; }
+.qa input:focus-visible, .qa select:focus-visible, .qa textarea:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+.req-mark { font-size: 11px; color: var(--accent); border: 1px solid var(--accent); border-radius: 999px; padding: 0 6px; margin-left: 4px; font-weight: 500; }
+.qa-hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+.qa-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; }
+.qa-actions .copy { margin: 0; padding: 9px 20px; font-weight: 700; }
+.qa-actions .copy[disabled] { opacity: .55; cursor: default; }
+#qa-status { font-size: 14px; color: var(--muted); }
+#qa-status.ok { color: var(--accent); font-weight: 700; }
+#qa-status.err { color: var(--warn); font-weight: 700; }
+.qa-alt { margin-top: 14px; }
+.qa-alt summary { cursor: pointer; color: var(--muted); font-size: 14.5px; }
+.qa-alt[open] summary { margin-bottom: 8px; }
+@media (max-width: 640px) { .qa-grid { grid-template-columns: 1fr; } }
 footer { margin-top: 48px; padding-block: 22px 40px; border-top: 1px solid var(--line); font-size: 13px; color: var(--muted); }
 footer .wrap { display: grid; gap: 6px; }
 
@@ -254,13 +273,37 @@ html { scroll-behavior: smooth; }
     <p class="ask">教えてほしいこと：止まった手順、分かりにくかった画面、表示されたエラーの文言</p>
   </div>
   <h3 id="contact" style="margin-top:26px">質問・不具合報告</h3>
-  <p>質問・不具合の報告・機能の要望は、下の<b>問い合わせテンプレート</b>をコピーして埋め、<b>開発者（まぐのりあ）へ Discord のメッセージで送ってください</b>。このテンプレートは、開発を手伝っている AI（Claude）がそのまま読んで回答できる形になっています。開発者が AI に渡し、回答をお返しします。</p>
-  <ol class="steps" style="margin-top:14px">
-    <li><div>「テンプレートをコピー」を押します。</div></li>
-    <li><div>【】の後ろを埋めます。分からない項目は空欄のままで大丈夫です。</div></li>
-    <li><div>開発者へ送ります。スクリーンショットや、アプリの「サポート用診断レポート」があれば一緒に添付してください。</div></li>
-  </ol>
-  <p class="note">パスワード・接続先の IP アドレス・鍵などの情報は書かないでください。診断レポートは、それらを自動で伏せてあります。</p>
+  <p>質問・不具合の報告・機能の要望は、このフォームから送れます。アカウントは要りません。届いた内容は開発を手伝っている AI（Claude）が読んで回答を作り、開発者（まぐのりあ）が確認してからお返しします。</p>
+  <form id="qa-form" class="qa" novalidate>
+    <div class="qa-row">
+      <label for="qa-kind">種類</label>
+      <select id="qa-kind"><option>質問</option><option>不具合</option><option>要望</option></select>
+    </div>
+    <div class="qa-row">
+      <label for="qa-body">困っていること・知りたいこと <span class="req-mark">必須</span></label>
+      <textarea id="qa-body" rows="5" maxlength="1000" required placeholder="例：英語字幕を ON にしても VR 内に何も表示されません"></textarea>
+    </div>
+    <div class="qa-grid">
+      <div class="qa-row"><label for="qa-feature">どの機能で</label><input id="qa-feature" maxlength="60" placeholder="例：英語字幕"></div>
+      <div class="qa-row"><label for="qa-version">アプリのバージョン</label><input id="qa-version" maxlength="30" placeholder="例：0.6.1"></div>
+      <div class="qa-row"><label for="qa-windows">Windows のバージョン</label><input id="qa-windows" maxlength="40" placeholder="例：Windows 11"></div>
+      <div class="qa-row"><label for="qa-conn">Frame の接続方法</label><select id="qa-conn"><option>ドングル</option><option>その他</option><option>分からない</option></select></div>
+    </div>
+    <div class="qa-row">
+      <label for="qa-steps">試した手順・表示されたエラーの文言</label>
+      <textarea id="qa-steps" rows="3" maxlength="600"></textarea>
+    </div>
+    <div class="qa-row">
+      <label for="qa-reply">返事の送り先（Discord の名前など・任意）</label>
+      <input id="qa-reply" maxlength="60" placeholder="空欄の場合、返事はできません">
+    </div>
+    <div class="qa-hp" aria-hidden="true"><label for="qa-web">Web</label><input id="qa-web" tabindex="-1" autocomplete="off"></div>
+    <p class="note">パスワード・接続先の IP アドレス・鍵などの情報は書かないでください。スクリーンショットや診断レポートは、返事のときに開発者から受け取り方をお伝えします。</p>
+    <div class="qa-actions"><button type="submit" class="copy" id="qa-send">送信する</button><span id="qa-status" role="status"></span></div>
+  </form>
+  <details class="qa-alt">
+    <summary>フォームが使えないとき（テンプレートで送る）</summary>
+    <p>下のテンプレートをコピーして埋め、開発者（まぐのりあ）へ Discord のメッセージで送ってください。</p>
   <button class="copy" id="copy-template" type="button">テンプレートをコピー</button>
   <pre class="report" id="template">Frame Assistant の利用者からの問い合わせです。
 Frame Assistant のホームページと説明書の内容をもとに、日本語で、専門用語を使わずに分かりやすく回答してください。
@@ -277,6 +320,7 @@ Frame Assistant のホームページと説明書の内容をもとに、日本�
 【VRChat を起動していたか】はい / いいえ
 【初めてこのアプリを入れた PC か】はい / いいえ
 【添付したもの】スクリーンショット / 診断レポート / なし</pre>
+  </details>
 </section>
 
 <section id="news">
@@ -309,6 +353,36 @@ document.getElementById('copy-template').addEventListener('click', function () {
   }
   try { navigator.clipboard.writeText(pre.textContent).then(done, fallback); } catch (e) { fallback(); }
 });
+
+(function () {
+  var HOOK = 'https://discord.com/api/webhooks/1554804774397022250/f6z0WtPq7x3aMel4SO_UOsKiO_1FIfHbJO_0t-Us31WwdT5SJLKz3YYhdwiwSymh2Q_D';
+  var form = document.getElementById('qa-form'), btn = document.getElementById('qa-send'), st = document.getElementById('qa-status');
+  function v(id) { return (document.getElementById(id).value || '').trim(); }
+  function say(text, cls) { st.textContent = text; st.className = cls || ''; }
+  function last() { try { return +localStorage.getItem('qa-last') || 0; } catch (e) { return 0; } }
+  function mark() { try { localStorage.setItem('qa-last', String(Date.now())); } catch (e) {} }
+  form.addEventListener('submit', function (ev) {
+    ev.preventDefault();
+    if (v('qa-web')) { say('送信しました。', 'ok'); return; }
+    var body = v('qa-body');
+    if (body.length < 5) { say('「困っていること・知りたいこと」を5文字以上で書いてください。', 'err'); document.getElementById('qa-body').focus(); return; }
+    if (Date.now() - last() < 60000) { say('続けて送る場合は、1分ほど待ってから送ってください。', 'err'); return; }
+    var NL = String.fromCharCode(10);
+    var text = ['【種類】' + v('qa-kind'), '【困っていること・知りたいこと】' + body,
+      '【どの機能で】' + v('qa-feature'), '【アプリのバージョン】' + v('qa-version'),
+      '【Windows のバージョン】' + v('qa-windows'), '【Frame の接続方法】' + v('qa-conn'),
+      '【試した手順・エラーの文言】' + v('qa-steps'), '【返事の送り先】' + v('qa-reply')].join(NL);
+    btn.disabled = true; say('送信しています…');
+    fetch(HOOK, { method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ username: 'Frame Assistant 質問フォーム', content: text.slice(0, 1990), allowed_mentions: { parse: [] } }) })
+      .then(function (r) {
+        if (!r.ok) throw new Error(String(r.status));
+        mark(); form.reset(); say('送信しました。回答は開発者から返事の送り先へお送りします。', 'ok');
+      })
+      .catch(function () { say('送信できませんでした。時間をおいて試すか、下のテンプレートで開発者へ直接送ってください。', 'err'); })
+      .then(function () { btn.disabled = false; });
+  });
+})();
 </script>
 </body>
 </html>
