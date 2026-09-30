@@ -298,6 +298,11 @@ html { scroll-behavior: smooth; }
       <textarea id="qa-steps" rows="3" maxlength="600"></textarea>
     </div>
     <div class="qa-row">
+      <label for="qa-files">画像・動画（任意・3つまで・1つ8MBまで）</label>
+      <input id="qa-files" type="file" accept="image/*,video/*" multiple>
+      <span class="muted" style="font-size:13.5px">VR の中の様子は、スマホでレンズ越しに撮った写真や短い動画で大丈夫です。PC の画面は Windows の「Win + Shift + S」で撮れます。</span>
+    </div>
+    <div class="qa-row">
       <label for="qa-reply">連絡先（Discord の名前など・任意）</label>
       <input id="qa-reply" maxlength="60" placeholder="追加で確認したいことがあるときに使います">
     </div>
@@ -404,9 +409,18 @@ document.getElementById('copy-template').addEventListener('click', function () {
       '【どの機能で】' + v('qa-feature'), '【アプリのバージョン】' + v('qa-version'),
       '【Windows のバージョン】' + v('qa-windows'), '【Frame の接続方法】' + v('qa-conn'),
       '【試した手順・エラーの文言】' + v('qa-steps'), '【連絡先】' + v('qa-reply')].join(NL);
-    btn.disabled = true; say('送信しています…');
-    fetch(HOOK, { method: 'POST', headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ username: 'Frame Assistant 質問フォーム', content: text.slice(0, 1990), allowed_mentions: { parse: [] } }) })
+    var files = Array.prototype.slice.call(document.getElementById('qa-files').files || []);
+    if (files.length > 3) { say('画像・動画は3つまでにしてください。', 'err'); return; }
+    for (var f = 0; f < files.length; f++) {
+      if (files[f].size > 8 * 1024 * 1024) { say('「' + files[f].name + '」が8MBを超えています。短くするか、写真にしてください。', 'err'); return; }
+      if (!/^(image|video)\//.test(files[f].type)) { say('画像か動画のファイルを選んでください。', 'err'); return; }
+    }
+    if (files.length) text += NL + '【添付】' + files.length + '件（画像・動画）';
+    var fd = new FormData();
+    fd.append('payload_json', JSON.stringify({ username: 'Frame Assistant 質問フォーム', content: text.slice(0, 1990), allowed_mentions: { parse: [] } }));
+    files.forEach(function (file, n) { fd.append('files[' + n + ']', file, file.name); });
+    btn.disabled = true; say(files.length ? '送信しています…（画像・動画があると少し時間がかかります）' : '送信しています…');
+    fetch(HOOK, { method: 'POST', body: fd })
       .then(function (r) {
         if (!r.ok) throw new Error(String(r.status));
         mark(); form.reset();
