@@ -254,17 +254,29 @@ html { scroll-behavior: smooth; }
     <p class="ask">教えてほしいこと：止まった手順、分かりにくかった画面、表示されたエラーの文言</p>
   </div>
   <h3 id="contact" style="margin-top:26px">質問・不具合報告</h3>
-  <p>質問や不具合の報告、機能の要望は、<b>開発者（まぐのりあ）へ Discord で直接送ってください</b>。テスターの方は、参加しているサーバーからメッセージを送ってもらえれば大丈夫です。</p>
-  <p>不具合のときは、次のひな形をコピーして埋めてください。エラー画面のスクリーンショットと、アプリの「サポート用診断レポート」も添えてもらえると助かります。パスワードや接続先などの情報は送らないでください（診断レポートは自動で伏せてあります）。</p>
-  <button class="copy" id="copy-template" type="button">ひな形をコピー</button>
-  <pre class="report" id="template">【試した機能】
-【起きたこと】
-【再現手順】1. 2. 3.
-【エラーの文言・スクリーンショット】
-【Windows のバージョン】
+  <p>質問・不具合の報告・機能の要望は、下の<b>問い合わせテンプレート</b>をコピーして埋め、<b>開発者（まぐのりあ）へ Discord のメッセージで送ってください</b>。このテンプレートは、開発を手伝っている AI（Claude）がそのまま読んで回答できる形になっています。開発者が AI に渡し、回答をお返しします。</p>
+  <ol class="steps" style="margin-top:14px">
+    <li><div>「テンプレートをコピー」を押します。</div></li>
+    <li><div>【】の後ろを埋めます。分からない項目は空欄のままで大丈夫です。</div></li>
+    <li><div>開発者へ送ります。スクリーンショットや、アプリの「サポート用診断レポート」があれば一緒に添付してください。</div></li>
+  </ol>
+  <p class="note">パスワード・接続先の IP アドレス・鍵などの情報は書かないでください。診断レポートは、それらを自動で伏せてあります。</p>
+  <button class="copy" id="copy-template" type="button">テンプレートをコピー</button>
+  <pre class="report" id="template">Frame Assistant の利用者からの問い合わせです。
+Frame Assistant のホームページと説明書の内容をもとに、日本語で、専門用語を使わずに分かりやすく回答してください。
+不具合の場合は、考えられる原因と、利用者が自分で試せる対処を順番に示してください。分からないことは推測せず「確認が必要」と書いてください。
+
+【種類】質問 / 不具合 / 要望 （どれか1つを残す）
+【アプリのバージョン】（例：0.6.1）
+【困っていること・知りたいこと】
+【どの機能で起きたか】（例：翻訳、英語字幕、タイマー、セットアップ）
+【試した手順】1. 2. 3.
+【表示されたエラーの文言】
+【Windows のバージョン】（例：Windows 11）
 【Frame の接続方法】ドングル / その他
-【VRChat 起動中か】はい / いいえ
-【初めて入れた PC か】はい / いいえ</pre>
+【VRChat を起動していたか】はい / いいえ
+【初めてこのアプリを入れた PC か】はい / いいえ
+【添付したもの】スクリーンショット / 診断レポート / なし</pre>
 </section>
 
 <section id="news">
@@ -289,7 +301,7 @@ html { scroll-behavior: smooth; }
 <script>
 document.getElementById('copy-template').addEventListener('click', function () {
   var btn = this, pre = document.getElementById('template');
-  function done() { btn.textContent = 'コピーしました'; setTimeout(function () { btn.textContent = 'ひな形をコピー'; }, 1800); }
+  function done() { btn.textContent = 'コピーしました'; setTimeout(function () { btn.textContent = 'テンプレートをコピー'; }, 1800); }
   function fallback() {
     var r = document.createRange(); r.selectNodeContents(pre);
     var s = window.getSelection(); s.removeAllRanges(); s.addRange(r);
