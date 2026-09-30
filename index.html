@@ -139,6 +139,10 @@ code, .file { font-family: var(--font-mono); font-size: .86em; background: var(-
 .sr { position: absolute; left: -9999px; }
 .ans-out { white-space: pre-wrap; font-size: 15px; }
 .ans-out:empty { display: none; }
+.my-tickets { display: grid; gap: 6px; border-top: 1px solid var(--line); padding-top: 10px; }
+.ticket-list { display: flex; flex-wrap: wrap; gap: 8px; }
+.ticket-list button { font-family: var(--font-mono); font-size: 13px; background: var(--accent-soft); color: var(--ink); border: 1px solid var(--line); border-radius: 6px; padding: 4px 10px; cursor: pointer; }
+.ticket-list button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 .ans-out .when { display: block; font-family: var(--font-mono); font-size: 12px; color: var(--muted); margin-bottom: 6px; }
 .qa-alt summary { cursor: pointer; color: var(--muted); font-size: 14.5px; }
 .qa-alt[open] summary { margin-bottom: 8px; }
@@ -319,6 +323,10 @@ html { scroll-behavior: smooth; }
       <button type="submit" class="copy">回答を見る</button>
     </div>
     <div id="ans-out" class="ans-out" role="status"></div>
+    <div id="my-tickets" class="my-tickets" hidden>
+      <span class="muted" style="font-size:13.5px">このブラウザから送った質問（押すと回答を表示します）</span>
+      <div id="my-ticket-list" class="ticket-list"></div>
+    </div>
   </form>
   <details class="qa-alt">
     <summary>フォームが使えないとき（テンプレートで送る）</summary>
@@ -381,6 +389,25 @@ document.getElementById('copy-template').addEventListener('click', function () {
   function say(text, cls) { st.textContent = text; st.className = cls || ''; }
   function last() { try { return +localStorage.getItem('qa-last') || 0; } catch (e) { return 0; } }
   function mark() { try { localStorage.setItem('qa-last', String(Date.now())); } catch (e) {} }
+  function loadTickets() { try { var a = JSON.parse(localStorage.getItem('qa-tickets') || '[]'); return Array.isArray(a) ? a : []; } catch (e) { return []; } }
+  function saveTicket(t) {
+    var a = loadTickets().filter(function (x) { return x && x.t !== t; });
+    a.unshift({ t: t, d: new Date().toISOString().slice(0, 10) });
+    try { localStorage.setItem('qa-tickets', JSON.stringify(a.slice(0, 20))); } catch (e) {}
+    showTickets();
+  }
+  function showTickets() {
+    var a = loadTickets(), box = document.getElementById('my-tickets'), list = document.getElementById('my-ticket-list');
+    list.textContent = '';
+    a.forEach(function (x) {
+      if (!x || !/^Q-[A-Z0-9]{6}$/.test(x.t)) return;
+      var b = document.createElement('button'); b.type = 'button'; b.textContent = x.t + '（' + x.d + '）';
+      b.addEventListener('click', function () { document.getElementById('qa-ticket').value = x.t; document.getElementById('ans-form').requestSubmit ? document.getElementById('ans-form').requestSubmit() : document.getElementById('ans-form').dispatchEvent(new Event('submit', { cancelable: true })); });
+      list.appendChild(b);
+    });
+    box.hidden = !list.children.length;
+  }
+  showTickets();
   document.getElementById('ans-form').addEventListener('submit', function (ev) {
     ev.preventDefault();
     var out = document.getElementById('ans-out');
@@ -426,6 +453,7 @@ document.getElementById('copy-template').addEventListener('click', function () {
         mark(); form.reset();
         say('送信しました。受付番号は ' + ticket + ' です。この番号を控えておき、数分後に下の「回答を見る」で確認してください。', 'ok');
         document.getElementById('qa-ticket').value = ticket;
+        saveTicket(ticket);
       })
       .catch(function () { say('送信できませんでした。時間をおいて試すか、下のテンプレートで開発者へ直接送ってください。', 'err'); })
       .then(function () { btn.disabled = false; });
