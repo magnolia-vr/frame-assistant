@@ -136,6 +136,10 @@ code, .file { font-family: var(--font-mono); font-size: .86em; background: var(-
 #qa-status.ok { color: var(--accent); font-weight: 700; }
 #qa-status.err { color: var(--warn); font-weight: 700; }
 .qa-alt { margin-top: 14px; }
+.sr { position: absolute; left: -9999px; }
+.ans-out { white-space: pre-wrap; font-size: 15px; }
+.ans-out:empty { display: none; }
+.ans-out .when { display: block; font-family: var(--font-mono); font-size: 12px; color: var(--muted); margin-bottom: 6px; }
 .qa-alt summary { cursor: pointer; color: var(--muted); font-size: 14.5px; }
 .qa-alt[open] summary { margin-bottom: 8px; }
 @media (max-width: 640px) { .qa-grid { grid-template-columns: 1fr; } }
@@ -273,7 +277,7 @@ html { scroll-behavior: smooth; }
     <p class="ask">教えてほしいこと：止まった手順、分かりにくかった画面、表示されたエラーの文言</p>
   </div>
   <h3 id="contact" style="margin-top:26px">質問・不具合報告</h3>
-  <p>質問・不具合の報告・機能の要望は、このフォームから送れます。アカウントは要りません。届いた内容は開発を手伝っている AI（Claude）が読んで回答を作り、開発者（まぐのりあ）が確認してからお返しします。</p>
+  <p>質問・不具合の報告・機能の要望は、このフォームから送れます。アカウントは要りません。届いた内容は開発を手伝っている AI（Claude）が読んで回答を作り、開発者（まぐのりあ）が確認してから、このページの「回答を見る」に載せます。送信後に表示される<b>受付番号</b>を控えておいてください。</p>
   <form id="qa-form" class="qa" novalidate>
     <div class="qa-row">
       <label for="qa-kind">種類</label>
@@ -294,12 +298,22 @@ html { scroll-behavior: smooth; }
       <textarea id="qa-steps" rows="3" maxlength="600"></textarea>
     </div>
     <div class="qa-row">
-      <label for="qa-reply">返事の送り先（Discord の名前など・任意）</label>
-      <input id="qa-reply" maxlength="60" placeholder="空欄の場合、返事はできません">
+      <label for="qa-reply">連絡先（Discord の名前など・任意）</label>
+      <input id="qa-reply" maxlength="60" placeholder="追加で確認したいことがあるときに使います">
     </div>
     <div class="qa-hp" aria-hidden="true"><label for="qa-web">Web</label><input id="qa-web" tabindex="-1" autocomplete="off"></div>
-    <p class="note">パスワード・接続先の IP アドレス・鍵などの情報は書かないでください。スクリーンショットや診断レポートは、返事のときに開発者から受け取り方をお伝えします。</p>
+    <p class="note">回答はこのページに載ります（受付番号を知っている人だけが探せます）。名前・パスワード・接続先の IP アドレス・鍵などの個人情報は書かないでください。</p>
     <div class="qa-actions"><button type="submit" class="copy" id="qa-send">送信する</button><span id="qa-status" role="status"></span></div>
+  </form>
+  <h3 id="answers" style="margin-top:26px">回答を見る</h3>
+  <p>送信したときに表示された受付番号（Q- から始まる番号）を入れてください。回答は開発者が確認してから載せます。</p>
+  <form id="ans-form" class="qa" novalidate>
+    <div class="qa-actions">
+      <label for="qa-ticket" class="sr">受付番号</label>
+      <input id="qa-ticket" maxlength="8" placeholder="Q-XXXXXX" style="max-width:12rem;text-transform:uppercase" autocomplete="off">
+      <button type="submit" class="copy">回答を見る</button>
+    </div>
+    <div id="ans-out" class="ans-out" role="status"></div>
   </form>
   <details class="qa-alt">
     <summary>フォームが使えないとき（テンプレートで送る）</summary>
@@ -361,6 +375,20 @@ document.getElementById('copy-template').addEventListener('click', function () {
   function say(text, cls) { st.textContent = text; st.className = cls || ''; }
   function last() { try { return +localStorage.getItem('qa-last') || 0; } catch (e) { return 0; } }
   function mark() { try { localStorage.setItem('qa-last', String(Date.now())); } catch (e) {} }
+  document.getElementById('ans-form').addEventListener('submit', function (ev) {
+    ev.preventDefault();
+    var out = document.getElementById('ans-out');
+    var t = v('qa-ticket').toUpperCase().replace(/\s/g, '');
+    if (!/^Q-[A-Z0-9]{6}$/.test(t)) { out.textContent = '受付番号は Q- のあとに英数字6文字です（例：Q-4F7K2M）。'; return; }
+    out.textContent = '確認しています…';
+    fetch('answers.json?t=' + Date.now()).then(function (r) { return r.json(); }).then(function (data) {
+      var a = data[t];
+      if (!a) { out.textContent = 'まだ回答が載っていません。開発者が確認中です。時間をおいてもう一度見てください。'; return; }
+      out.textContent = '';
+      var when = document.createElement('span'); when.className = 'when'; when.textContent = t + ' · ' + a.date;
+      out.appendChild(when); out.appendChild(document.createTextNode(a.answer));
+    }).catch(function () { out.textContent = '回答を読み込めませんでした。時間をおいてもう一度試してください。'; });
+  });
   form.addEventListener('submit', function (ev) {
     ev.preventDefault();
     if (v('qa-web')) { say('送信しました。', 'ok'); return; }
@@ -368,16 +396,21 @@ document.getElementById('copy-template').addEventListener('click', function () {
     if (body.length < 5) { say('「困っていること・知りたいこと」を5文字以上で書いてください。', 'err'); document.getElementById('qa-body').focus(); return; }
     if (Date.now() - last() < 60000) { say('続けて送る場合は、1分ほど待ってから送ってください。', 'err'); return; }
     var NL = String.fromCharCode(10);
-    var text = ['【種類】' + v('qa-kind'), '【困っていること・知りたいこと】' + body,
+    var CH = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789', ticket = 'Q-', rnd = new Uint32Array(6);
+    (window.crypto || window.msCrypto).getRandomValues(rnd);
+    for (var i = 0; i < 6; i++) ticket += CH.charAt(rnd[i] % CH.length);
+    var text = ['【受付番号】' + ticket, '【種類】' + v('qa-kind'), '【困っていること・知りたいこと】' + body,
       '【どの機能で】' + v('qa-feature'), '【アプリのバージョン】' + v('qa-version'),
       '【Windows のバージョン】' + v('qa-windows'), '【Frame の接続方法】' + v('qa-conn'),
-      '【試した手順・エラーの文言】' + v('qa-steps'), '【返事の送り先】' + v('qa-reply')].join(NL);
+      '【試した手順・エラーの文言】' + v('qa-steps'), '【連絡先】' + v('qa-reply')].join(NL);
     btn.disabled = true; say('送信しています…');
     fetch(HOOK, { method: 'POST', headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ username: 'Frame Assistant 質問フォーム', content: text.slice(0, 1990), allowed_mentions: { parse: [] } }) })
       .then(function (r) {
         if (!r.ok) throw new Error(String(r.status));
-        mark(); form.reset(); say('送信しました。回答は開発者から返事の送り先へお送りします。', 'ok');
+        mark(); form.reset();
+        say('送信しました。受付番号は ' + ticket + ' です。この番号を控えておき、下の「回答を見る」で確認してください（回答までしばらくかかります）。', 'ok');
+        document.getElementById('qa-ticket').value = ticket;
       })
       .catch(function () { say('送信できませんでした。時間をおいて試すか、下のテンプレートで開発者へ直接送ってください。', 'err'); })
       .then(function () { btn.disabled = false; });
