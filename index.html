@@ -1,0 +1,300 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="description" content="Steam Frame をPCで使うときの便利機能をまとめたWindows用の無料ツール。見つめて翻訳、英語字幕、時計・タイマー、マイク診断など。">
+<title>Frame Assistant</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;500;700;900&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: product homepage for a headset add-on — a quiet HUD-like hero, sticky section nav, then single reading column with a two-column feature index */
+:root {
+  --bg: #f4f6f7;
+  --surface: #ffffff;
+  --ink: #172026;
+  --muted: #56636c;
+  --line: #d7dde1;
+  --accent: #0f766e;
+  --accent-soft: #e0f0ed;
+  --hero-bg: #0f1a1f;
+  --hero-ink: #e6eef0;
+  --hero-dim: #8fa3ab;
+  --hud: #5eead4;
+  --warn: #9a5b00;
+  --warn-soft: #fbf0dc;
+  --font-display: "Zen Kaku Gothic New", "Hiragino Sans", "Yu Gothic UI", "Meiryo", sans-serif;
+  --font-body: "Zen Kaku Gothic New", "Hiragino Sans", "Yu Gothic UI", "Meiryo", sans-serif;
+  --font-mono: "IBM Plex Mono", "Consolas", "Menlo", monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #10171b; --surface: #172127; --ink: #e3e9ec; --muted: #9aa8b1; --line: #28343b;
+    --accent: #4fc4b6; --accent-soft: #14302c; --hero-bg: #0a1215; --warn: #e3a64a; --warn-soft: #2e2415;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #10171b; --surface: #172127; --ink: #e3e9ec; --muted: #9aa8b1; --line: #28343b;
+  --accent: #4fc4b6; --accent-soft: #14302c; --hero-bg: #0a1215; --warn: #e3a64a; --warn-soft: #2e2415;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--ink); font-family: var(--font-body); font-size: 16px; line-height: 1.85; margin: 0; }
+a { color: var(--accent); }
+.wrap { max-width: 50rem; margin: 0 auto; padding-inline: 20px; }
+
+/* Hero */
+.hero { background: var(--hero-bg); color: var(--hero-ink); padding-block: 56px 48px; position: relative; overflow: hidden; }
+.hero .wrap { display: grid; gap: 18px; position: relative; }
+.hero::after { content: ""; position: absolute; inset: 0; background:
+  radial-gradient(circle at 82% 30%, rgba(94,234,212,.14), transparent 45%),
+  repeating-linear-gradient(0deg, rgba(255,255,255,.035) 0 1px, transparent 1px 26px); pointer-events: none; }
+.eyebrow { font-family: var(--font-mono); font-size: 12px; letter-spacing: .1em; color: var(--hud); text-transform: uppercase; }
+h1 { font-family: var(--font-display); font-weight: 900; font-size: clamp(2.2rem, 7vw, 3.4rem); line-height: 1.15; margin: 0; letter-spacing: .01em; }
+.hero .lead { color: var(--hero-dim); margin: 0; max-width: 36rem; font-size: 1.05rem; }
+.hud { display: flex; flex-wrap: wrap; gap: 8px 10px; font-family: var(--font-mono); font-size: 12.5px; }
+.hud span { border: 1px solid rgba(94,234,212,.45); color: var(--hud); border-radius: 4px; padding: 2px 9px; }
+.cta { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 6px; }
+.btn { display: inline-block; text-decoration: none; font-weight: 700; border-radius: 7px; padding: 11px 20px; }
+.btn-primary { background: var(--hud); color: #062320; }
+.btn-ghost { border: 1px solid rgba(230,238,240,.35); color: var(--hero-ink); }
+.btn:focus-visible, a:focus-visible, button:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+.hero .btn:focus-visible { outline-color: var(--hud); }
+
+/* Nav */
+nav.sections { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; background: var(--surface); border-bottom: 1px solid var(--line); }
+nav.sections .wrap { display: flex; gap: 4px; overflow-x: auto; padding-block: 6px; }
+nav.sections a { text-decoration: none; color: var(--muted); font-size: 14.5px; padding: 6px 12px; border-radius: 6px; white-space: nowrap; }
+nav.sections a:hover { background: var(--accent-soft); color: var(--ink); }
+
+section { padding-block: 44px 8px; scroll-margin-top: 56px; }
+h2 { font-family: var(--font-display); font-weight: 700; font-size: 1.5rem; margin: 0 0 16px; text-wrap: balance; }
+h3 { font-family: var(--font-display); font-weight: 700; font-size: 1.05rem; margin: 0 0 4px; }
+p { margin: 0 0 12px; }
+ul, ol { margin: 0 0 12px; padding-left: 1.4em; }
+li + li { margin-top: 4px; }
+.muted { color: var(--muted); }
+code, .file { font-family: var(--font-mono); font-size: .86em; background: var(--accent-soft); color: var(--ink); padding: 1px 6px; border-radius: 4px; overflow-wrap: anywhere; }
+
+/* Download */
+.dl-card { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 20px; display: grid; gap: 14px; }
+.dl-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 14px; }
+.ver { font-family: var(--font-mono); font-weight: 500; font-size: 1.15rem; }
+.badge { font-family: var(--font-mono); font-size: 11.5px; border: 1px solid var(--line); border-radius: 999px; padding: 0 9px; color: var(--muted); }
+.files { display: grid; gap: 10px; }
+.file-row { display: grid; grid-template-columns: 1fr auto; gap: 6px 14px; align-items: center; border-top: 1px solid var(--line); padding-top: 12px; }
+.file-row .name { font-weight: 700; }
+.file-row .desc { color: var(--muted); font-size: 14.5px; grid-column: 1; }
+.file-row .btn { grid-column: 2; grid-row: 1 / span 2; background: var(--accent); color: var(--surface); }
+.hash { font-family: var(--font-mono); font-size: 11.5px; color: var(--muted); overflow-wrap: anywhere; grid-column: 1 / -1; }
+.note { background: var(--warn-soft); border: 1px solid var(--line); border-radius: 8px; padding: 12px 16px; font-size: 14.5px; }
+.req { border-top: 1px solid var(--line); margin: 0; }
+.req div { display: grid; grid-template-columns: 10rem 1fr; gap: 12px; padding-block: 10px; border-bottom: 1px solid var(--line); }
+.req dt { font-weight: 700; margin: 0; }
+.req dd { margin: 0; color: var(--muted); min-width: 0; }
+
+/* Features */
+.features { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+.feature { background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 16px 18px; display: grid; gap: 6px; align-content: start; min-width: 0; }
+.feature p { font-size: 14.5px; color: var(--muted); margin: 0; }
+.tag { justify-self: start; font-family: var(--font-mono); font-size: 11px; letter-spacing: .03em; color: var(--muted); border: 1px solid var(--line); border-radius: 999px; padding: 0 8px; }
+.tag.new { color: var(--accent); border-color: var(--accent); }
+
+/* Steps */
+.steps { counter-reset: s; list-style: none; padding: 0; display: grid; gap: 14px; }
+.steps li { counter-increment: s; display: grid; grid-template-columns: 2rem 1fr; gap: 12px; margin: 0; }
+.steps li::before { content: counter(s); font-family: var(--font-mono); color: var(--accent); border: 1px solid var(--accent); border-radius: 50%; width: 1.8rem; height: 1.8rem; display: grid; place-items: center; font-size: 13px; margin-top: 2px; }
+
+/* Tester */
+.test { border-left: 3px solid var(--accent); background: var(--surface); padding: 16px 20px; border-radius: 0 8px 8px 0; }
+.test + .test { margin-top: 14px; }
+.ask { font-weight: 700; color: var(--accent); margin: 8px 0 0; }
+.report { font-family: var(--font-mono); font-size: 13.5px; background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 14px 16px; white-space: pre-wrap; overflow-x: auto; line-height: 1.7; margin: 0; }
+.copy { font-family: var(--font-body); font-size: 14px; background: var(--accent); color: var(--surface); border: 0; border-radius: 6px; padding: 6px 14px; cursor: pointer; margin-bottom: 8px; }
+
+/* News */
+.news { list-style: none; padding: 0; display: grid; gap: 0; border-top: 1px solid var(--line); }
+.news li { display: grid; grid-template-columns: 7.5rem 1fr; gap: 12px; padding-block: 12px; border-bottom: 1px solid var(--line); margin: 0; }
+.news time, .news .v { font-family: var(--font-mono); font-size: 13px; color: var(--muted); font-variant-numeric: tabular-nums; }
+.news b { display: block; }
+
+footer { margin-top: 48px; padding-block: 22px 40px; border-top: 1px solid var(--line); font-size: 13px; color: var(--muted); }
+footer .wrap { display: grid; gap: 6px; }
+
+@media (max-width: 640px) {
+  .features { grid-template-columns: 1fr; }
+  .req div, .news li { grid-template-columns: 1fr; gap: 2px; }
+  .file-row { grid-template-columns: 1fr; }
+  .file-row .btn { grid-column: 1; grid-row: auto; justify-self: start; }
+}
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+html { scroll-behavior: smooth; }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="eyebrow">For Steam Frame · Windows</div>
+    <h1>Frame Assistant</h1>
+    <p class="lead">Steam Frame を PC につないで遊ぶときの便利機能をまとめた、Windows 用の無料ツールです。VR の中で英語を見つめて翻訳したり、英語の音声に字幕を付けたり、時計・タイマー・マイクの状態を表示したりできます。使いたい機能だけを選んで入れられます。</p>
+    <div class="hud" aria-label="主な機能"><span>見つめて翻訳</span><span>英語字幕</span><span>時計・バッテリー</span><span>タイマー・音声操作</span><span>マイク診断</span></div>
+    <div class="cta">
+      <a class="btn btn-primary" href="#download">ダウンロード</a>
+      <a class="btn btn-ghost" href="#guide">使い方を見る</a>
+    </div>
+  </div>
+</header>
+
+<nav class="sections" aria-label="ページ内の移動">
+  <div class="wrap">
+    <a href="#features">できること</a>
+    <a href="#download">ダウンロード</a>
+    <a href="#guide">導入・使い方</a>
+    <a href="#testers">テスターの方へ</a>
+    <a href="#news">お知らせ</a>
+  </div>
+</nav>
+
+<main class="wrap">
+
+<section id="features">
+  <h2>できること</h2>
+  <div class="features">
+    <div class="feature"><span class="tag">要 アイトラッキング</span><h3>見つめて翻訳・読み上げ</h3><p>VR 内の英語の文を見つめると、文字を読み取って日本語に訳し、VR 内のパネルに表示します。日本語で読み上げることもできます。処理はすべて PC の中で行います。</p></div>
+    <div class="feature"><span class="tag new">0.6 新機能</span><h3>英語字幕</h3><p>PC で流れている英語の音声を文字にして、日本語訳と一緒に VR 内へ表示します。音声も字幕も保存しません。</p></div>
+    <div class="feature"><span class="tag">要 Frame 接続</span><h3>アイトラッキング</h3><p>Frame の視線とまばたきを VRChat に送ります。</p></div>
+    <div class="feature"><span class="tag">要 Frame 接続</span><h3>時計・バッテリー HUD</h3><p>VR の中に時刻・日付・バッテリー残量を表示します。</p></div>
+    <div class="feature"><span class="tag">Frame なしでも可</span><h3>タイマー・音声アシスタント</h3><p>タイマーや時刻の通知を登録できます。「アシスタント」と呼びかけて「今何時」「10分タイマー」「次の曲」などを話して操作できます。</p></div>
+    <div class="feature"><span class="tag">要 Frame 接続</span><h3>マイク診断・音量調整</h3><p>Frame の内蔵マイクの音量や音声処理を点検し、音割れするときは音量を下げられます。変更前の値は保存して元に戻せます。</p></div>
+    <div class="feature"><span class="tag new">0.6.1 新機能</span><h3>PC マイクのミュート表示</h3><p>Steam Streaming Microphone がミュート中かを VR 内に表示し、見つめる・ボタン・声で切り替えます。</p></div>
+    <div class="feature"><span class="tag">要 OVR Advanced Settings</span><h3>PlaySpace 設定</h3><p>OVR Advanced Settings の Space Drag（手でプレイ空間を動かす機能）を、右手のコントローラーで使えるようにします。</p></div>
+  </div>
+  <p class="muted" style="margin-top:14px">ほかにも、VR 内のメディア操作（再生・曲送り・音量）、アプリ内通知、翻訳結果を VRChat のチャットボックスへ送る機能、ドングル接続チェック、不具合報告用の診断レポートがあります。新しい機能はどれも最初は OFF です。</p>
+</section>
+
+<section id="download">
+  <h2>ダウンロード</h2>
+  <div class="dl-card">
+    <div class="dl-head"><span class="ver">0.6.1 preview</span><span class="badge">試験版</span><span class="badge">2026-09-30</span></div>
+    <div class="files">
+      <div class="file-row">
+        <span class="name">Setup.exe（おすすめ）</span>
+        <span class="desc">ダブルクリックで導入できます。管理者権限は要りません。約100 MB</span>
+        <a class="btn" href="https://github.com/tubaki4869-cloud/frame-assistant/releases/download/v0.6.1-preview/FrameAssistant-Setup-0.6.1-preview.exe">ダウンロード</a>
+        <span class="hash">SHA256 71249d0bccd532b77c2cfbd6cfbd23788d67cd59a73cec563c31ac7295fc187d</span>
+      </div>
+      <div class="file-row">
+        <span class="name">ZIP 版</span>
+        <span class="desc">展開してから FrameAssistant.exe を開く形式です。約141 MB</span>
+        <a class="btn" href="https://github.com/tubaki4869-cloud/frame-assistant/releases/download/v0.6.1-preview/Frame-Assistant-Setup-0.6.1-preview.zip">ダウンロード</a>
+        <span class="hash">SHA256 0c1676570fe4c623655c7f8b4675f18f2fd5e741a908427eddd5efcb0e608cb9</span>
+      </div>
+    </div>
+    <p class="note">署名のないアプリのため、Windows の青い警告画面が出ることがあります。その場合は「詳細情報」→「実行」を押してください。Windows 11 の「スマート アプリ コントロール」が ON の PC では起動を止められることがあります。</p>
+  </div>
+
+  <h3 style="margin-top:28px">動作環境</h3>
+  <dl class="req">
+    <div><dt>PC</dt><dd>Windows 11 で動作を確認しています（Windows 10 は未確認）。Python などの追加インストールは不要です。</dd></div>
+    <div><dt>Steam Frame</dt><dd>PC に接続でき、SteamVR が動く状態にしておきます。</dd></div>
+    <div><dt>Frame の開発者モード</dt><dd>Frame 本体の設定を変える機能を入れるときに必要です。「設定 → システム」で開発者モードを ON にし、「設定 → 開発者 → Set User Password」でパスワードを設定します。タイマー・音声アシスタントだけなら不要です。</dd></div>
+    <div><dt>OVR Advanced Settings</dt><dd>PlaySpace 設定を使う場合のみ必要です。Steam で導入しておいてください。</dd></div>
+    <div><dt>日本語の音声機能</dt><dd>読み上げには Windows の日本語音声、呼びかけでの操作には Windows の日本語音声認識を使います。</dd></div>
+  </dl>
+</section>
+
+<section id="guide">
+  <h2>導入・使い方</h2>
+  <ol class="steps">
+    <li><div><span class="file">FrameAssistant-Setup-0.6.1-preview.exe</span> をダブルクリックします。ZIP 版は、右クリック →「すべて展開」してから <span class="file">FrameAssistant.exe</span> を開きます。</div></li>
+    <li><div>「インストール・更新」を選び、使いたい機能にチェックを入れます。「すべて選択」でまとめて選べます。</div></li>
+    <li><div>初めて使うときは Frame を接続し、画面の案内に従って接続を確認します。</div></li>
+    <li><div>最後に表示される変更内容を確認して実行します。途中でファイルをダウンロードする機能（翻訳 約115 MB、字幕 約141 MB）は、公式の配布元から取得して中身を確認します。</div></li>
+    <li><div>完了画面の「操作画面を開く」で、機能ごとのタブが並んだ画面が開きます。「デスクトップにショートカットを作成」を押すと、次からはアイコンから開けます。</div></li>
+  </ol>
+  <h3 style="margin-top:22px">使うときのポイント</h3>
+  <ul>
+    <li>VR 内の翻訳パネルや電源ボタンは、見つめるだけで操作できます。反応までの時間は標準 1 秒で、0.6〜2 秒から選べます。</li>
+    <li>電源ボタンで表示をまとめて OFF にすると、アイトラッキングは動かしたまま、HUD・読み上げ・音声の待受を止めます。</li>
+    <li>呼びかけで操作するときは、Windows の入力マイクが <b>Steam Streaming Microphone</b> になっているか確認してください。「アシスタント」と言って一拍置き、「聞いています」と出てから話します。</li>
+    <li>削除は、セットアップを開いて「アンインストール」から、機能ごと、またはまとめて行えます。</li>
+  </ul>
+  <p class="note">音声・字幕・認識した言葉は保存も送信もしません。マイクや Frame の設定を変えるのは、ボタンを押したときだけです。<span class="file">%LOCALAPPDATA%\FrameAssistant\backups</span> には接続先などが含まれるので、他の人に渡さないでください。</p>
+</section>
+
+<section id="testers">
+  <h2>テスターの方へ</h2>
+  <p>開発者の環境では、次の3点をまだ確認できていません。できる範囲で試して、結果を教えてください。</p>
+  <div class="test">
+    <h3>1. 翻訳を実際に使ってみる</h3>
+    <ul>
+      <li>英語の看板・メニュー・チャットを見つめて、翻訳パネルが出るか試してください。</li>
+      <li>読み上げを ON にして、日本語の音声が Frame から聞こえるか確認してください。</li>
+    </ul>
+    <p class="ask">教えてほしいこと：読み取りの正確さ、訳の自然さ、表示までの時間、見つめる操作の疲れやすさ</p>
+  </div>
+  <div class="test">
+    <h3>2. 音声認識の精度</h3>
+    <ul>
+      <li>入力マイクが Steam Streaming Microphone か確認してから、待受を ON にしてください。</li>
+      <li>静かな場所と、ゲームの音や周りの話し声がある場所の両方で試してください。</li>
+    </ul>
+    <p class="ask">教えてほしいこと：10回呼びかけて何回反応したか、話していないのに反応したことがあるか</p>
+  </div>
+  <div class="test">
+    <h3>3. まっさらな PC でのインストールと削除</h3>
+    <ul>
+      <li>このアプリを入れたことがない PC で、インストールから操作画面の起動まで進めてください。</li>
+      <li>そのあと「アンインストール」で削除し、ショートカットや機能が残っていないか見てください。</li>
+    </ul>
+    <p class="ask">教えてほしいこと：止まった手順、分かりにくかった画面、表示されたエラーの文言</p>
+  </div>
+  <h3 style="margin-top:26px">不具合を報告するとき</h3>
+  <p>次のひな形をコピーして埋めてください。エラー画面のスクリーンショットと、アプリの「サポート用診断レポート」も添えてもらえると助かります。</p>
+  <button class="copy" id="copy-template" type="button">ひな形をコピー</button>
+  <pre class="report" id="template">【試した機能】
+【起きたこと】
+【再現手順】1. 2. 3.
+【エラーの文言・スクリーンショット】
+【Windows のバージョン】
+【Frame の接続方法】ドングル / その他
+【VRChat 起動中か】はい / いいえ
+【初めて入れた PC か】はい / いいえ</pre>
+</section>
+
+<section id="news">
+  <h2>お知らせ</h2>
+  <ul class="news">
+    <li><span class="v">0.6.1 · 09-30</span><div><b>PC マイクのミュート表示・切り替えを追加</b><span class="muted">VR 内の表示と、見つめる・ボタン・声での切り替えに対応しました。</span></div></li>
+    <li><span class="v">0.6 · 09-30</span><div><b>英語字幕、アプリ内通知、メディア操作、診断レポート、Setup.exe</b><span class="muted">Setup.exe で導入できるようになりました。セットアップに「すべて選択」を追加しました。</span></div></li>
+    <li><span class="v">0.5 · 09-29</span><div><b>マイク・ドングルの点検、音声認識の改善、チャットボックス送信</b><span class="muted">使うマイクを選べるようになり、エラー後に自動で待受へ戻ります。</span></div></li>
+    <li><span class="v">0.4 · 09-29</span><div><b>タイマー・音声アシスタントを追加</b></div></li>
+  </ul>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>Frame Assistant は個人が開発している非公式ツールです。Valve や VRChat とは関係ありません。</span>
+    <span>使用している技術のライセンス表示は、アプリ内の <span class="file">_internal/licenses</span> にあります。</span>
+  </div>
+</footer>
+
+<script>
+document.getElementById('copy-template').addEventListener('click', function () {
+  var btn = this, pre = document.getElementById('template');
+  function done() { btn.textContent = 'コピーしました'; setTimeout(function () { btn.textContent = 'ひな形をコピー'; }, 1800); }
+  function fallback() {
+    var r = document.createRange(); r.selectNodeContents(pre);
+    var s = window.getSelection(); s.removeAllRanges(); s.addRange(r);
+    btn.textContent = '選択しました。Ctrl+C でコピー';
+  }
+  try { navigator.clipboard.writeText(pre.textContent).then(done, fallback); } catch (e) { fallback(); }
+});
+</script>
+</body>
+</html>
