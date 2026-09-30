@@ -1,6 +1,6 @@
 {
-  "latest": "0.6.1-preview",
+  "latest": "0.6.3-preview",
   "released": "2026-09-30",
   "page": "https://magnolia-vr.github.io/frame-assistant/#download",
-  "notes": "PCマイクのミュート表示・切り替えを追加"
+  "notes": "翻訳パネルのチカチカ対策"
 }
