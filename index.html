@@ -277,7 +277,7 @@ html { scroll-behavior: smooth; }
     <p class="ask">教えてほしいこと：止まった手順、分かりにくかった画面、表示されたエラーの文言</p>
   </div>
   <h3 id="contact" style="margin-top:26px">質問・不具合報告</h3>
-  <p>質問・不具合の報告・機能の要望は、このフォームから送れます。アカウントは要りません。届いた内容は開発を手伝っている AI（Claude）が読んで回答を作り、開発者（まぐのりあ）が確認してから、このページの「回答を見る」に載せます。送信後に表示される<b>受付番号</b>を控えておいてください。</p>
+  <p>質問・不具合の報告・機能の要望は、このフォームから送れます。アカウントは要りません。届いた内容は AI（Claude）が読んで自動で回答し、数分でこのページの「回答を見る」に載ります。送信後に表示される<b>受付番号</b>を控えておいてください。開発者（まぐのりあ）にも内容が届き、必要に応じて確認します。</p>
   <form id="qa-form" class="qa" novalidate>
     <div class="qa-row">
       <label for="qa-kind">種類</label>
@@ -306,7 +306,7 @@ html { scroll-behavior: smooth; }
     <div class="qa-actions"><button type="submit" class="copy" id="qa-send">送信する</button><span id="qa-status" role="status"></span></div>
   </form>
   <h3 id="answers" style="margin-top:26px">回答を見る</h3>
-  <p>送信したときに表示された受付番号（Q- から始まる番号）を入れてください。回答は開発者が確認してから載せます。</p>
+  <p>送信したときに表示された受付番号（Q- から始まる番号）を入れてください。AI による自動回答です。回答が出るまで数分かかります。</p>
   <form id="ans-form" class="qa" novalidate>
     <div class="qa-actions">
       <label for="qa-ticket" class="sr">受付番号</label>
@@ -383,7 +383,7 @@ document.getElementById('copy-template').addEventListener('click', function () {
     out.textContent = '確認しています…';
     fetch('answers.json?t=' + Date.now()).then(function (r) { return r.json(); }).then(function (data) {
       var a = data[t];
-      if (!a) { out.textContent = 'まだ回答が載っていません。開発者が確認中です。時間をおいてもう一度見てください。'; return; }
+      if (!a) { out.textContent = 'まだ回答が載っていません。回答を作っているところなので、数分おいてもう一度見てください。'; return; }
       out.textContent = '';
       var when = document.createElement('span'); when.className = 'when'; when.textContent = t + ' · ' + a.date;
       out.appendChild(when); out.appendChild(document.createTextNode(a.answer));
@@ -409,7 +409,7 @@ document.getElementById('copy-template').addEventListener('click', function () {
       .then(function (r) {
         if (!r.ok) throw new Error(String(r.status));
         mark(); form.reset();
-        say('送信しました。受付番号は ' + ticket + ' です。この番号を控えておき、下の「回答を見る」で確認してください（回答までしばらくかかります）。', 'ok');
+        say('送信しました。受付番号は ' + ticket + ' です。この番号を控えておき、数分後に下の「回答を見る」で確認してください。', 'ok');
         document.getElementById('qa-ticket').value = ticket;
       })
       .catch(function () { say('送信できませんでした。時間をおいて試すか、下のテンプレートで開発者へ直接送ってください。', 'err'); })
