@@ -1,0 +1,30 @@
+name: Republish release as bot
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Release tag to republish (e.g. v0.6.1-preview)'
+        required: true
+permissions:
+  contents: write
+jobs:
+  republish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Re-create the release under github-actions[bot]
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ inputs.tag }}
+          REPO: ${{ github.repository }}
+        run: |
+          set -euo pipefail
+          mkdir assets
+          gh release download "$TAG" -R "$REPO" -D assets
+          gh release view "$TAG" -R "$REPO" --json name,body,isPrerelease > meta.json
+          jq -r .body meta.json > notes.md
+          NAME=$(jq -r .name meta.json)
+          PRE=$(jq -r .isPrerelease meta.json)
+          sha256sum assets/*
+          gh release delete "$TAG" -R "$REPO" --yes
+          if [ "$PRE" = "true" ]; then FLAG=--prerelease; else FLAG=; fi
+          gh release create "$TAG" -R "$REPO" --title "$NAME" --notes-file notes.md $FLAG assets/*
