@@ -1,0 +1,317 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="description" content="Frame Assistant 0.6.6 の動作チェックリスト。項目ごとに試した結果を記録して、開発者へ送れます。">
+<title>動作チェックリスト</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;500;700;900&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: one reading column of numbered check cards grouped by feature, with a sticky progress bar and a send panel at the end */
+:root {
+  --bg: #f4f6f7;
+  --surface: #ffffff;
+  --ink: #172026;
+  --muted: #56636c;
+  --line: #d7dde1;
+  --accent: #0f766e;
+  --accent-soft: #e0f0ed;
+  --hero-bg: #0f1a1f;
+  --hero-ink: #e6eef0;
+  --hero-dim: #8fa3ab;
+  --hud: #5eead4;
+  --warn: #9a5b00;
+  --warn-soft: #fbf0dc;
+  --ng: #b42318;
+  --ng-soft: #fbe9e7;
+  --font-display: "Zen Kaku Gothic New", "Hiragino Sans", "Yu Gothic UI", "Meiryo", sans-serif;
+  --font-body: "Zen Kaku Gothic New", "Hiragino Sans", "Yu Gothic UI", "Meiryo", sans-serif;
+  --font-mono: "IBM Plex Mono", "Consolas", "Menlo", monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #10171b; --surface: #172127; --ink: #e3e9ec; --muted: #9aa8b1; --line: #28343b;
+    --accent: #4fc4b6; --accent-soft: #14302c; --hero-bg: #0a1215; --warn: #e3a64a; --warn-soft: #2e2415;
+    --ng: #f08a7e; --ng-soft: #3a1d1a;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #10171b; --surface: #172127; --ink: #e3e9ec; --muted: #9aa8b1; --line: #28343b;
+  --accent: #4fc4b6; --accent-soft: #14302c; --hero-bg: #0a1215; --warn: #e3a64a; --warn-soft: #2e2415;
+  --ng: #f08a7e; --ng-soft: #3a1d1a;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--ink); font-family: var(--font-body); font-size: 16px; line-height: 1.8; margin: 0; }
+a { color: var(--accent); }
+.wrap { max-width: 50rem; margin: 0 auto; padding-inline: 16px; }
+
+.hero { background: var(--hero-bg); color: var(--hero-ink); padding-block: 40px 34px; }
+.hero .wrap { display: grid; gap: 12px; }
+.eyebrow { font-family: var(--font-mono); font-size: 12px; letter-spacing: .1em; color: var(--hud); text-transform: uppercase; }
+.eyebrow a { color: var(--hud); }
+h1 { font-family: var(--font-display); font-weight: 900; font-size: clamp(1.8rem, 6vw, 2.6rem); line-height: 1.2; margin: 0; }
+.hero p { color: var(--hero-dim); margin: 0; max-width: 38rem; }
+
+.bar { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; background: var(--surface); border-bottom: 1px solid var(--line); }
+.bar .wrap { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 16px; padding-block: 8px; font-size: 14px; }
+.meter { flex: 1 1 10rem; height: 8px; background: var(--line); border-radius: 999px; overflow: hidden; display: flex; }
+.meter i { display: block; height: 100%; }
+.meter .m-ok { background: var(--accent); }
+.meter .m-ng { background: var(--ng); }
+.counts { font-family: var(--font-mono); font-size: 13px; color: var(--muted); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.bar a { text-decoration: none; font-size: 14px; white-space: nowrap; }
+
+section { padding-block: 32px 4px; scroll-margin-top: 52px; }
+h2 { font-family: var(--font-display); font-weight: 700; font-size: 1.35rem; margin: 0 0 4px; display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 10px; }
+.sec-note { color: var(--muted); font-size: 14.5px; margin: 0 0 12px; }
+.tag { font-family: var(--font-mono); font-size: 11px; font-weight: 400; color: var(--muted); border: 1px solid var(--line); border-radius: 999px; padding: 0 8px; }
+.tag.dev { color: var(--warn); border-color: var(--warn); }
+.note { background: var(--warn-soft); border: 1px solid var(--line); border-radius: 8px; padding: 12px 16px; font-size: 14.5px; margin: 0; }
+
+.items { list-style: none; padding: 0; margin: 0; display: grid; gap: 10px; counter-reset: c; }
+.item { counter-increment: c; background: var(--surface); border: 1px solid var(--line); border-left: 4px solid var(--line); border-radius: 0 8px 8px 0; padding: 14px 16px; display: grid; gap: 8px; }
+.item[data-state="ok"] { border-left-color: var(--accent); }
+.item[data-state="ng"] { border-left-color: var(--ng); }
+.item[data-state="skip"] { border-left-color: var(--muted); }
+.item h3 { font-family: var(--font-display); font-size: 1.02rem; margin: 0; display: flex; gap: 8px; }
+.item h3::before { content: counter(c, decimal-leading-zero); font-family: var(--font-mono); font-weight: 500; font-size: 13px; color: var(--muted); padding-top: 2px; }
+.how, .expect { margin: 0; font-size: 14.5px; }
+.how { color: var(--muted); }
+.expect b { color: var(--accent); font-weight: 700; margin-right: 4px; }
+.choices { display: flex; flex-wrap: wrap; gap: 8px; }
+.choices button { font: inherit; font-size: 14px; border: 1px solid var(--line); background: var(--bg); color: var(--ink); border-radius: 6px; padding: 5px 14px; cursor: pointer; min-height: 36px; }
+.choices button:focus-visible, .act:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.choices button[aria-pressed="true"].c-ok { background: var(--accent); border-color: var(--accent); color: var(--surface); }
+.choices button[aria-pressed="true"].c-ng { background: var(--ng); border-color: var(--ng); color: var(--surface); }
+.choices button[aria-pressed="true"].c-skip { background: var(--muted); border-color: var(--muted); color: var(--surface); }
+.memo { font: inherit; font-size: 14.5px; color: var(--ink); background: var(--bg); border: 1px solid var(--line); border-radius: 6px; padding: 6px 10px; width: 100%; resize: vertical; }
+.item[data-state="ng"] .memo { border-color: var(--ng); background: var(--ng-soft); }
+
+.send { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 18px; display: grid; gap: 12px; }
+.grid2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+.row { display: grid; gap: 4px; min-width: 0; }
+.send label { font-weight: 700; font-size: 14px; }
+.send input, .send select, .send textarea { font: inherit; font-size: 15px; color: var(--ink); background: var(--bg); border: 1px solid var(--line); border-radius: 6px; padding: 8px 10px; width: 100%; }
+.send input:focus-visible, .send select:focus-visible, .send textarea:focus-visible, .memo:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+.hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+.actions { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; }
+.act { font: inherit; font-size: 14px; font-weight: 700; border: 0; border-radius: 6px; padding: 9px 20px; cursor: pointer; background: var(--accent); color: var(--surface); }
+.act.sub { background: transparent; color: var(--muted); border: 1px solid var(--line); font-weight: 500; }
+.act[disabled] { opacity: .55; cursor: default; }
+#status { font-size: 14px; color: var(--muted); }
+#status.ok { color: var(--accent); font-weight: 700; }
+#status.err { color: var(--warn); font-weight: 700; }
+footer { margin-top: 40px; padding-block: 20px 40px; border-top: 1px solid var(--line); font-size: 13px; color: var(--muted); }
+@media (max-width: 640px) { .grid2 { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="eyebrow"><a href="./">Frame Assistant</a> · Checklist 0.6.6</div>
+    <h1>動作チェックリスト</h1>
+    <p>上から順に試して、項目ごとに「できた」「できない」「試していない」を押してください。押した結果はこのブラウザに残るので、途中で閉じても続きからできます。最後に「結果を送る」で開発者へ届きます。</p>
+  </div>
+</header>
+
+<div class="bar" aria-label="進み具合">
+  <div class="wrap">
+    <div class="meter" aria-hidden="true"><i class="m-ok" id="m-ok"></i><i class="m-ng" id="m-ng"></i></div>
+    <span class="counts" id="counts">0 / 0</span>
+    <a href="#send">結果を送る ↓</a>
+  </div>
+</div>
+
+<main class="wrap">
+  <section style="padding-top:24px">
+    <p class="note">0.6.6 は公開準備中です。公開後に<a href="./#download">ダウンロード</a>から入れ直してください。0.6.3 では「右下の翻訳ウィンドウ」「スクリーンショット」「マイク」の項目はまだ使えません。試せない項目は「試していない」のままで大丈夫です。</p>
+  </section>
+  <div id="list"></div>
+
+  <section id="send">
+    <h2>結果を送る</h2>
+    <p class="sec-note">分かる範囲で埋めてください。名前・パスワード・IP アドレスなどの個人情報は書かないでください。</p>
+    <form class="send" id="send-form" novalidate>
+      <div class="grid2">
+        <div class="row"><label for="f-version">アプリのバージョン</label><input id="f-version" maxlength="30" value="0.6.6"></div>
+        <div class="row"><label for="f-windows">Windows のバージョン</label><input id="f-windows" maxlength="40" placeholder="例：Windows 11"></div>
+        <div class="row"><label for="f-conn">Frame の接続方法</label><select id="f-conn"><option>ドングル</option><option>その他</option><option>分からない</option></select></div>
+        <div class="row"><label for="f-reply">連絡先（Discord の名前など・任意）</label><input id="f-reply" maxlength="60"></div>
+      </div>
+      <div class="row"><label for="f-note">全体の感想・気づいたこと</label><textarea id="f-note" rows="3" maxlength="800"></textarea></div>
+      <div class="hp" aria-hidden="true"><label for="f-web">Web</label><input id="f-web" tabindex="-1" autocomplete="off"></div>
+      <div class="actions">
+        <button type="submit" class="act" id="send-btn">結果を送る</button>
+        <button type="button" class="act sub" id="copy-btn">結果をコピー</button>
+        <button type="button" class="act sub" id="reset-btn">記録を消す</button>
+        <span id="status" role="status"></span>
+      </div>
+      <p class="sec-note" style="margin:0">送れないときは「結果をコピー」して、開発者（まぐのりあ）へ Discord で送ってください。不具合の詳しい相談は<a href="./#contact">質問フォーム</a>からどうぞ。</p>
+    </form>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">Frame Assistant は個人が開発している非公式ツールです。Valve や VRChat とは関係ありません。</div>
+</footer>
+
+<script>
+(function () {
+  var HOOK = 'https://discord.com/api/webhooks/1554804774397022250/f6z0WtPq7x3aMel4SO_UOsKiO_1FIfHbJO_0t-Us31WwdT5SJLKz3YYhdwiwSymh2Q_D';
+  var KEY = 'fa-checklist-066';
+  var SECTIONS = [
+    { id: 'voice', title: '声の聞き取り', note: '操作画面の音声の欄で「呼びかけ音声操作をON」にしてから試します。入力マイクは Steam Streaming Microphone にしておきます。', items: [
+      { id: 'v1', t: '待受を ON にできる', how: '「呼びかけ音声操作をON（PC内で認識）」にチェックを入れる。', exp: '使用中のマイクに Steam Streaming Microphone と表示され、エラーが出ない。' },
+      { id: 'v2', t: '「アシスタント」で反応する', how: '「アシスタント」と言って一拍置く。', exp: '「聞いています」と表示される。' },
+      { id: 'v3', t: '時刻を聞ける', how: '「アシスタント」→「何時ですか」「今何時ですか」「今の時間」をそれぞれ試す。', exp: 'どの言い方でも時刻が出る。できなかった言い方があればメモに書いてください。' },
+      { id: 'v4', t: 'ページを切り替えられる', how: '翻訳結果が2ページ以上あるときに「アシスタント」→「次のページへ」「前のページへ」「ページを戻して」。', exp: '言った通りにページが切り替わる。' },
+      { id: 'v5', t: '話していないのに反応しない', how: '待受を ON にしたまま、5分ほど普通に遊ぶ。', exp: '勝手に「聞いています」が出たり、操作されたりしない。' }
+    ] },
+    { id: 'window', title: '右下の翻訳ウィンドウ', note: '英語の文を見つめて翻訳し、結果の出方を確かめます。', items: [
+      { id: 'w1', t: '右下に出る', how: '英語の看板やメニューを見つめて翻訳する。', exp: '結果が視界の右下に縦長で出て、正面をふさがない。' },
+      { id: 'w2', t: '文字が読める', how: '結果ウィンドウの文字を読む。', exp: '無理なく読める大きさと濃さになっている。' },
+      { id: 'w3', t: 'PC で位置や大きさを変えられる', how: '翻訳タブの「翻訳のしかた・結果ウィンドウの位置と色」で、左右・上下・幅・高さ・文字の大きさ・透け具合を動かす。最後に「位置・色を標準に戻す」。', exp: 'VR 内のウィンドウがその通りに変わり、標準に戻せる。' },
+      { id: 'w4', t: 'ちかちかしない', how: '結果を表示したまま、しばらく見る。', exp: '点滅やちらつきがない。' }
+    ] },
+    { id: 'quality', title: '翻訳の質', note: '', items: [
+      { id: 't1', t: '全部大文字の英語も訳される', how: 'EXIT・SETTINGS・PLAY のような大文字だけの文字を見つめる。', exp: '英語のままではなく日本語になる。' },
+      { id: 't2', t: 'メニューが1行ずつ訳される', how: 'VRChat のメニューなど、項目が並んでいるものを訳す。', exp: '項目ごとに1行ずつ訳され、項目同士がくっつかない。' },
+      { id: 't3', t: '前の翻訳が出てこない', how: '1つ訳したあと、別の文を見つめて訳す。', exp: '新しい結果が出るまでの間に、前の結果が出ない。' }
+    ] },
+    { id: 'shot', title: 'スクリーンショット', note: 'スクショの欄で「視線クイックメニューと音声でも使う」にチェックを入れてから試します。', items: [
+      { id: 's1', t: '保存できる', how: '「スクショを保存する」を押す。または「アシスタント、スクショ」と言う。', exp: '保存される。保存先は「保存先:」で選んだ場所（配布版の標準は「このPC」）。' },
+      { id: 's2', t: '一覧に出る', how: '「一覧を更新」を押し、「フォルダーを開く」で中を見る。', exp: '撮った画像が一覧とフォルダーにある。' },
+      { id: 's3', t: '削除できる', how: '一覧で1枚選んで「削除」。', exp: '選んだ画像だけが消える。' }
+    ] },
+    { id: 'mic', title: 'マイク（ノイズ抑制・入口音量）', note: 'マイクタブの「ノイズ抑制・入口音量」で試します。Frame の開発者モードが必要です。', items: [
+      { id: 'm1', t: 'ノイズ抑制の ON・OFF が効く', how: '周りに音がある所で「ノイズ抑制（Frame）ON」を切り替えながら話し、VRChat などで聞こえ方を比べる。', exp: 'ON のほうが周りの音が小さくなる。' },
+      { id: 'm2', t: '入口の増幅を下げられる', how: '「入口の増幅を0dBにする（84）」を押す。', exp: 'エラーが出ずに変わり、声が割れにくくなる。' },
+      { id: 'm3', t: '元に戻せる', how: '「入口の増幅を元に戻す」と「元に戻す」を押す。', exp: '試す前の状態に戻る。' }
+    ] },
+    { id: 'rec', title: '録画', dev: true, note: '配布版ではまだ使えません。開発者が実機で確認している項目です。', items: [
+      { id: 'r1', t: '10秒の録画', how: '「録画開始」→ 約10秒 →「録画停止」。', exp: '音つきの動画が保存され、1秒あたりの大きさが想定の範囲に収まる。' }
+    ] }
+  ];
+  var LABEL = { ok: 'できた', ng: 'できない', skip: '試していない' };
+  var MARK = { ok: '○', ng: '×', skip: '－' };
+  var data = load();
+
+  function load() {
+    try { var d = JSON.parse(localStorage.getItem(KEY) || '{}'); return d && typeof d === 'object' ? d : {}; } catch (e) { return {}; }
+  }
+  function save() { try { localStorage.setItem(KEY, JSON.stringify(data)); } catch (e) {} }
+  function rec(id) { if (!data[id] || typeof data[id] !== 'object') data[id] = {}; return data[id]; }
+  function el(tag, cls, text) { var e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; }
+
+  var list = document.getElementById('list');
+  SECTIONS.forEach(function (s) {
+    var sec = el('section'); sec.id = s.id;
+    var h = el('h2', null, s.title);
+    if (s.dev) h.appendChild(el('span', 'tag dev', '開発者のみ'));
+    sec.appendChild(h);
+    if (s.note) sec.appendChild(el('p', 'sec-note', s.note));
+    var ol = el('ol', 'items');
+    s.items.forEach(function (it) {
+      var li = el('li', 'item'); li.id = 'item-' + it.id;
+      li.appendChild(el('h3', null, it.t));
+      li.appendChild(el('p', 'how', it.how));
+      var ex = el('p', 'expect'); ex.appendChild(el('b', null, '期待')); ex.appendChild(document.createTextNode(it.exp)); li.appendChild(ex);
+      var ch = el('div', 'choices'); ch.setAttribute('role', 'group'); ch.setAttribute('aria-label', it.t + ' の結果');
+      ['ok', 'ng', 'skip'].forEach(function (k) {
+        var b = el('button', 'c-' + k, LABEL[k]); b.type = 'button'; b.dataset.k = k;
+        b.addEventListener('click', function () {
+          var r = rec(it.id); r.s = r.s === k ? '' : k; save(); paint(li, it.id); tally();
+        });
+        ch.appendChild(b);
+      });
+      li.appendChild(ch);
+      var memo = el('textarea', 'memo'); memo.rows = 1; memo.maxLength = 300;
+      memo.placeholder = 'メモ（できなかったときの様子・表示されたエラーなど）';
+      memo.setAttribute('aria-label', it.t + ' のメモ');
+      memo.value = rec(it.id).m || '';
+      memo.addEventListener('input', function () { rec(it.id).m = memo.value; save(); });
+      li.appendChild(memo);
+      ol.appendChild(li);
+      paint(li, it.id);
+    });
+    sec.appendChild(ol);
+    list.appendChild(sec);
+  });
+
+  function paint(li, id) {
+    var s = (data[id] && data[id].s) || '';
+    if (s) li.dataset.state = s; else delete li.dataset.state;
+    Array.prototype.forEach.call(li.querySelectorAll('.choices button'), function (b) { b.setAttribute('aria-pressed', String(b.dataset.k === s)); });
+  }
+  function allItems() { var a = []; SECTIONS.forEach(function (s) { s.items.forEach(function (it) { a.push({ s: s, it: it }); }); }); return a; }
+  function tally() {
+    var a = allItems(), n = a.length, ok = 0, ng = 0, done = 0;
+    a.forEach(function (x) { var s = data[x.it.id] && data[x.it.id].s; if (s) done++; if (s === 'ok') ok++; if (s === 'ng') ng++; });
+    document.getElementById('m-ok').style.width = (ok / n * 100) + '%';
+    document.getElementById('m-ng').style.width = (ng / n * 100) + '%';
+    document.getElementById('counts').textContent = done + ' / ' + n + ' 記入（できた ' + ok + '・できない ' + ng + '）';
+  }
+  tally();
+
+  function v(id) { return (document.getElementById(id).value || '').trim(); }
+  function report() {
+    var NL = String.fromCharCode(10), out = ['【チェックリスト結果】0.6.6 動作チェック',
+      '【アプリのバージョン】' + v('f-version'), '【Windows】' + v('f-windows'), '【接続方法】' + v('f-conn')];
+    SECTIONS.forEach(function (s) {
+      out.push('■' + s.title);
+      s.items.forEach(function (it) {
+        var r = data[it.id] || {}, line = (MARK[r.s] || '・') + ' ' + it.t + (r.s ? '' : '（未記入）');
+        if (r.m && r.m.trim()) line += ' … ' + r.m.trim();
+        out.push(line);
+      });
+    });
+    if (v('f-note')) out.push('【全体の感想】' + v('f-note'));
+    if (v('f-reply')) out.push('【連絡先】' + v('f-reply'));
+    return out.join(NL);
+  }
+
+  var st = document.getElementById('status');
+  function say(t, c) { st.textContent = t; st.className = c || ''; }
+  function last() { try { return +localStorage.getItem('fa-checklist-last') || 0; } catch (e) { return 0; } }
+  function mark() { try { localStorage.setItem('fa-checklist-last', String(Date.now())); } catch (e) {} }
+
+  document.getElementById('send-form').addEventListener('submit', function (ev) {
+    ev.preventDefault();
+    if (v('f-web')) { say('送信しました。', 'ok'); return; }
+    var filled = allItems().filter(function (x) { return data[x.it.id] && data[x.it.id].s; }).length;
+    if (!filled) { say('まだ1つも記入されていません。項目のボタンを押してから送ってください。', 'err'); return; }
+    if (Date.now() - last() < 60000) { say('続けて送る場合は、1分ほど待ってから送ってください。', 'err'); return; }
+    var text = report(), fd = new FormData(), btn = document.getElementById('send-btn');
+    var body = text.length > 1900 ? text.slice(0, 1880) + String.fromCharCode(10) + '（続きは添付の全文）' : text;
+    fd.append('payload_json', JSON.stringify({ username: 'Frame Assistant チェックリスト', content: body, allowed_mentions: { parse: [] } }));
+    fd.append('files[0]', new Blob([text], { type: 'text/plain;charset=utf-8' }), 'checklist.txt');
+    btn.disabled = true; say('送信しています…');
+    fetch(HOOK, { method: 'POST', body: fd })
+      .then(function (r) { if (!r.ok) throw new Error(String(r.status)); mark(); say('送信しました。ご協力ありがとうございます。', 'ok'); })
+      .catch(function () { say('送信できませんでした。「結果をコピー」して Discord で送ってください。', 'err'); })
+      .then(function () { btn.disabled = false; });
+  });
+
+  document.getElementById('copy-btn').addEventListener('click', function () {
+    var text = report();
+    try { navigator.clipboard.writeText(text).then(function () { say('コピーしました。', 'ok'); }, function () { say('コピーできませんでした。', 'err'); }); }
+    catch (e) { say('コピーできませんでした。', 'err'); }
+  });
+
+  var armed = 0;
+  document.getElementById('reset-btn').addEventListener('click', function () {
+    var b = this;
+    if (Date.now() - armed > 4000) { armed = Date.now(); b.textContent = 'もう一度押すと消えます'; setTimeout(function () { b.textContent = '記録を消す'; }, 4000); return; }
+    data = {}; save(); armed = 0; b.textContent = '記録を消す';
+    Array.prototype.forEach.call(document.querySelectorAll('.item'), function (li) { paint(li, li.id.slice(5)); li.querySelector('.memo').value = ''; });
+    tally(); say('記録を消しました。');
+  });
+})();
+</script>
+</body>
+</html>
