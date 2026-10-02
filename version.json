@@ -1,6 +1,6 @@
 {
-  "latest": "0.6.3-preview",
-  "released": "2026-09-30",
+  "latest": "0.6.6-preview",
+  "released": "2026-10-02",
   "page": "https://magnolia-vr.github.io/frame-assistant/#download",
-  "notes": "翻訳パネルのチカチカ対策"
+  "notes": "音声操作の安定化・右下の翻訳ウィンドウ・スクリーンショット・ノイズ抑制"
 }
