@@ -326,7 +326,14 @@ footer { margin-top: 40px; padding-block: 20px 40px; border-top: 1px solid var(-
     if (s.need) h.appendChild(el('span', 'tag', '必要：' + s.need));
     var sc = el('span', 'sec-count'); sc.id = 'cnt-' + s.id; h.appendChild(sc);
     sec.appendChild(h);
-    if (s.note) sec.appendChild(el('p', 'sec-note', s.note));
+    if (s.note) {
+      var note = el('p', 'sec-note', s.note);
+      if (s.id === 'voice') {
+        var voiceLink = el('a', '', '認識される言い方の一覧'); voiceLink.href = 'voice.html';
+        note.appendChild(document.createTextNode(' ')); note.appendChild(voiceLink);
+      }
+      sec.appendChild(note);
+    }
     var ol = el('ol', 'items');
     s.items.forEach(function (it) {
       var li = el('li', 'item'); li.id = 'item-' + it.id;
