@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="description" content="Frame Assistant 0.6.6 の動作チェックリスト。項目ごとに試した結果を記録して、開発者へ送れます。">
-<title>動作チェックリスト</title>
+<meta name="description" content="Frame Assistant 0.6.6 の全機能版チェックリスト。新機能からこれまでの機能まで、試した結果を記録して開発者へ送れます。">
+<title>0.6.6 全機能版チェックリスト | Frame Assistant</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;500;700;900&family=IBM+Plex+Mono:wght@400;500&display=swap">
@@ -45,7 +45,7 @@
   color-scheme: dark;
 }
 * { box-sizing: border-box; }
-body { background: var(--bg); color: var(--ink); font-family: var(--font-body); font-size: 16px; line-height: 1.8; margin: 0; }
+body { background: var(--bg); color: var(--ink); font-family: var(--font-body); font-size: 16px; line-height: 1.8; margin: 0; overflow-wrap: anywhere; }
 a { color: var(--accent); }
 .wrap { max-width: 50rem; margin: 0 auto; padding-inline: 16px; }
 
@@ -62,28 +62,39 @@ h1 { font-family: var(--font-display); font-weight: 900; font-size: clamp(1.8rem
 .meter i { display: block; height: 100%; }
 .meter .m-ok { background: var(--accent); }
 .meter .m-ng { background: var(--ng); }
-.counts { font-family: var(--font-mono); font-size: 13px; color: var(--muted); font-variant-numeric: tabular-nums; white-space: nowrap; }
-.bar a { text-decoration: none; font-size: 14px; white-space: nowrap; }
+.counts { font-family: var(--font-mono); font-size: 13px; color: var(--muted); font-variant-numeric: tabular-nums; min-width: 0; }
+.bar a { text-decoration: none; font-size: 14px; white-space: nowrap; min-height: 44px; display: inline-flex; align-items: center; }
 
-section { padding-block: 32px 4px; scroll-margin-top: 52px; }
+section { padding-block: 32px 4px; scroll-margin-top: 120px; }
 h2 { font-family: var(--font-display); font-weight: 700; font-size: 1.35rem; margin: 0 0 4px; display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 10px; }
+.group { margin: 36px 0 0; padding-bottom: 8px; border-bottom: 2px solid var(--accent); }
+.sec-title { font-family: var(--font-display); font-weight: 700; font-size: 1.2rem; margin: 0 0 8px; display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 10px; }
+.sec-count, .toc-count { font-family: var(--font-mono); font-size: 12px; font-weight: 500; color: var(--muted); white-space: nowrap; font-variant-numeric: tabular-nums; }
+.sec-count.all, .toc-count.all { color: var(--accent); }
+.sec-count.has-ng, .toc-count.has-ng { color: var(--ng); }
+.toc { display: flex; flex-wrap: wrap; gap: 8px; padding: 16px; margin-top: 20px; border: 1px solid var(--line); border-radius: 8px; background: var(--surface); }
+.toc-group { flex-basis: 100%; font-weight: 700; margin-top: 12px; }
+.toc-group:first-child { margin-top: 0; }
+.toc a { display: inline-flex; flex-wrap: wrap; align-items: center; gap: 4px 8px; max-width: 100%; min-height: 44px; padding: 6px 10px; border: 1px solid var(--line); border-radius: 6px; text-decoration: none; font-size: 14px; }
+.toc a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 .sec-note { color: var(--muted); font-size: 14.5px; margin: 0 0 12px; }
 .tag { font-family: var(--font-mono); font-size: 11px; font-weight: 400; color: var(--muted); border: 1px solid var(--line); border-radius: 999px; padding: 0 8px; }
 .tag.dev { color: var(--warn); border-color: var(--warn); }
 .note { background: var(--warn-soft); border: 1px solid var(--line); border-radius: 8px; padding: 12px 16px; font-size: 14.5px; margin: 0; }
 
-.items { list-style: none; padding: 0; margin: 0; display: grid; gap: 10px; counter-reset: c; }
+#list { counter-reset: c; }
+.items { list-style: none; padding: 0; margin: 0; display: grid; gap: 10px; }
 .item { counter-increment: c; background: var(--surface); border: 1px solid var(--line); border-left: 4px solid var(--line); border-radius: 0 8px 8px 0; padding: 14px 16px; display: grid; gap: 8px; }
 .item[data-state="ok"] { border-left-color: var(--accent); }
 .item[data-state="ng"] { border-left-color: var(--ng); }
 .item[data-state="skip"] { border-left-color: var(--muted); }
-.item h3 { font-family: var(--font-display); font-size: 1.02rem; margin: 0; display: flex; gap: 8px; }
-.item h3::before { content: counter(c, decimal-leading-zero); font-family: var(--font-mono); font-weight: 500; font-size: 13px; color: var(--muted); padding-top: 2px; }
+.item h4 { font-family: var(--font-display); font-size: 1.02rem; margin: 0; display: flex; gap: 8px; }
+.item h4::before { content: counter(c, decimal-leading-zero); font-family: var(--font-mono); font-weight: 500; font-size: 13px; color: var(--muted); padding-top: 2px; flex-shrink: 0; }
 .how, .expect { margin: 0; font-size: 14.5px; }
 .how { color: var(--muted); }
 .expect b { color: var(--accent); font-weight: 700; margin-right: 4px; }
 .choices { display: flex; flex-wrap: wrap; gap: 8px; }
-.choices button { font: inherit; font-size: 14px; border: 1px solid var(--line); background: var(--bg); color: var(--ink); border-radius: 6px; padding: 5px 14px; cursor: pointer; min-height: 36px; }
+.choices button { font: inherit; font-size: 14px; border: 1px solid var(--line); background: var(--bg); color: var(--ink); border-radius: 6px; padding: 7px 14px; cursor: pointer; min-height: 44px; max-width: 100%; }
 .choices button:focus-visible, .act:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 .choices button[aria-pressed="true"].c-ok { background: var(--accent); border-color: var(--accent); color: var(--surface); }
 .choices button[aria-pressed="true"].c-ng { background: var(--ng); border-color: var(--ng); color: var(--surface); }
@@ -99,7 +110,7 @@ h2 { font-family: var(--font-display); font-weight: 700; font-size: 1.35rem; mar
 .send input:focus-visible, .send select:focus-visible, .send textarea:focus-visible, .memo:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
 .hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
 .actions { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; }
-.act { font: inherit; font-size: 14px; font-weight: 700; border: 0; border-radius: 6px; padding: 9px 20px; cursor: pointer; background: var(--accent); color: var(--surface); }
+.act { font: inherit; font-size: 14px; font-weight: 700; border: 0; border-radius: 6px; padding: 9px 20px; cursor: pointer; background: var(--accent); color: var(--surface); min-height: 44px; max-width: 100%; }
 .act.sub { background: transparent; color: var(--muted); border: 1px solid var(--line); font-weight: 500; }
 .act[disabled] { opacity: .55; cursor: default; }
 #status { font-size: 14px; color: var(--muted); }
@@ -114,8 +125,8 @@ footer { margin-top: 40px; padding-block: 20px 40px; border-top: 1px solid var(-
 <header class="hero">
   <div class="wrap">
     <div class="eyebrow"><a href="./">Frame Assistant</a> · Checklist 0.6.6</div>
-    <h1>動作チェックリスト</h1>
-    <p>上から順に試して、項目ごとに「できた」「できない」「試していない」を押してください。押した結果はこのブラウザに残るので、途中で閉じても続きからできます。最後に「結果を送る」で開発者へ届きます。</p>
+    <h1>0.6.6 全機能版チェックリスト</h1>
+    <p>0.6.6 の新しい機能を先に、これまでの機能を後ろにまとめています。項目ごとに試して「できた」「できない」「試していない」を押してください。記録はこのブラウザに残るので、途中で閉じても続きからできます。最後に「結果を送る」で開発者へ届きます。</p>
   </div>
 </header>
 
@@ -129,8 +140,9 @@ footer { margin-top: 40px; padding-block: 20px 40px; border-top: 1px solid var(-
 
 <main class="wrap">
   <section style="padding-top:24px">
-    <p class="note">0.6.6 を使って試してください。まだの方は<a href="./#download">ダウンロード</a>から入れ直せます（Setup.exe を開いて「インストール・更新」）。試せない項目は「試していない」のままで大丈夫です。</p>
+    <p class="note">0.6.6 を使って試してください。まだの方は<a href="./#download">ダウンロード</a>から入れ直せます（Setup.exe を開いて「インストール・更新」）。VR 内の表示には Frame 接続と SteamVR、視線操作にはアイトラ、声の操作には音声待受 ON が必要です。必要な機材や環境がない項目は「試していない」を選んで大丈夫です。録画は開発者のみの確認項目で、進み具合と結果の集計には数えません。</p>
   </section>
+  <nav id="toc" class="toc" aria-label="項目の目次"></nav>
   <div id="list"></div>
 
   <section id="send">
@@ -164,37 +176,127 @@ footer { margin-top: 40px; padding-block: 20px 40px; border-top: 1px solid var(-
 (function () {
   var HOOK = 'https://discord.com/api/webhooks/1554804774397022250/f6z0WtPq7x3aMel4SO_UOsKiO_1FIfHbJO_0t-Us31WwdT5SJLKz3YYhdwiwSymh2Q_D';
   var KEY = 'fa-checklist-066';
+  var GROUPS = { fresh: '0.6.6 の新しい機能', base: 'これまでの機能' };
   var SECTIONS = [
-    { id: 'voice', title: '声の聞き取り', note: '操作画面の音声の欄で「呼びかけ音声操作をON」にしてから試します。入力マイクは Steam Streaming Microphone にしておきます。', items: [
-      { id: 'v1', t: '待受を ON にできる', how: '「呼びかけ音声操作をON（PC内で認識）」にチェックを入れる。', exp: '使用中のマイクに Steam Streaming Microphone と表示され、エラーが出ない。' },
-      { id: 'v2', t: '「アシスタント」で反応する', how: '「アシスタント」と言って一拍置く。', exp: '「聞いています」と表示される。' },
-      { id: 'v3', t: '時刻を聞ける', how: '「アシスタント」→「何時ですか」「今何時ですか」「今の時間」をそれぞれ試す。', exp: 'どの言い方でも時刻が出る。できなかった言い方があればメモに書いてください。' },
+    { id: 'voice', g: 'fresh', title: '声の聞き取り', need: 'マイク', note: '「タイマー・アシスタント」タブで試します。「入力一覧を更新」を押し、入力を「自動（Steam Streaming Microphone優先）」または使いたいマイクにします。各操作の前に「②待受中」の表示を確かめ、呼びかけ後8秒以内に指示を話してください。', items: [
+      { id: 'v1', t: '待受を ON にできる', how: '「呼びかけ音声操作をON（PC内で認識）」にチェックを入れる。', exp: '「①日本語音声認識とマイク（使用するマイク名）を準備しています…」のあと「②待受中：「アシスタント」と呼びかけてください。」になり、使用中のマイクが表示される（括弧内は選んだマイク名）。' },
+      { id: 'v2', t: '「アシスタント」で反応する', how: '「アシスタント」と言って一拍置く。', exp: '「③呼びかけを検出しました。聞いています。8秒以内に指示を話してください。」と表示される。' },
+      { id: 'v3', t: '時刻を聞ける', how: '「アシスタント」→「何時ですか」「今何時ですか」「今の時間」をそれぞれ試す（毎回、呼びかけから）。', exp: 'どの言い方でも「④認識：」に続いて指示が表示され、時刻が出る。通らなかった言い方はメモに。' },
       { id: 'v4', t: 'ページを切り替えられる', how: '翻訳結果が2ページ以上あるときに「アシスタント」→「次のページへ」「前のページへ」「ページを戻して」。', exp: '言った通りにページが切り替わる。' },
-      { id: 'v5', t: '話していないのに反応しない', how: '待受を ON にしたまま、5分ほど普通に遊ぶ。', exp: '勝手に「聞いています」が出たり、操作されたりしない。' }
+      { id: 'v5', t: '話していないのに反応しない', how: '待受を ON にしたまま、5分ほど普通に遊ぶ。静かな所か、ゲーム音・話し声がある所かをメモに。', exp: '観察した5分間に勝手に「③呼びかけを検出しました。聞いています。8秒以内に指示を話してください。」になったり、操作されたりしない。呼びかけを受理しなかった表示は不合格にしない。' }
     ] },
-    { id: 'window', title: '右下の翻訳ウィンドウ', note: '英語の文を見つめて翻訳し、結果の出方を確かめます。', items: [
-      { id: 'w1', t: '右下に出る', how: '英語の看板やメニューを見つめて翻訳する。', exp: '結果が視界の右下に縦長で出て、正面をふさがない。' },
-      { id: 'w2', t: '文字が読める', how: '結果ウィンドウの文字を読む。', exp: '無理なく読める大きさと濃さになっている。' },
-      { id: 'w3', t: 'PC で位置や大きさを変えられる', how: '翻訳タブの「翻訳のしかた・結果ウィンドウの位置と色」で、左右・上下・幅・高さ・文字の大きさ・透け具合を動かす。最後に「位置・色を標準に戻す」。', exp: 'VR 内のウィンドウがその通りに変わり、標準に戻せる。' },
-      { id: 'w4', t: 'ちかちかしない', how: '結果を表示したまま、しばらく見る。', exp: '点滅やちらつきがない。' }
+    { id: 'window', g: 'fresh', title: '右下の翻訳ウィンドウ', need: 'Frame接続・アイトラ', note: '「翻訳・読み上げ」タブで「位置・色を標準に戻す」を押します。「接続・UI表示」で接続し、「翻訳ON/OFF」で翻訳をONにしてから試します。', items: [
+      { id: 'w1', t: '右下に縦長で出る', how: '英語の看板やメニューを約1秒見つめて翻訳する。', exp: '結果が視界の右下に縦長で出て、正面をふさがない。電源マークなど他の表示は動かない。' },
+      { id: 'w2', t: '文字が読める', how: '結果ウィンドウの文字を読む。明るい場所と暗い場所の両方で。', exp: '無理なく読め、文字とボタンが重ならない。' },
+      { id: 'w3', t: 'PC で位置や大きさを変えられる', how: '「翻訳のしかた・結果ウィンドウの位置と色」で、左右・上下・幅・高さ・文字の大きさ・透け具合を動かす。アプリを開き直して確かめ、最後に「位置・色を標準に戻す」。', exp: 'VR 内のウィンドウがその通りに変わり、開き直しても残り、標準に戻せる。' },
+      { id: 'w4', t: 'ちかちかしない', how: '見つめる → 処理中 → 結果 → 閉じる、を何回か繰り返す。時計などほかの表示も出したままで。', exp: 'どの場面でも点滅・ちらつき・位置のずれがない。' }
     ] },
-    { id: 'quality', title: '翻訳の質', note: '', items: [
-      { id: 't1', t: '全部大文字の英語も訳される', how: 'EXIT・SETTINGS・PLAY のような大文字だけの文字を見つめる。', exp: '英語のままではなく日本語になる。' },
-      { id: 't2', t: 'メニューが1行ずつ訳される', how: 'VRChat のメニューなど、項目が並んでいるものを訳す。', exp: '項目ごとに1行ずつ訳され、項目同士がくっつかない。' },
-      { id: 't3', t: '前の翻訳が出てこない', how: '1つ訳したあと、別の文を見つめて訳す。', exp: '新しい結果が出るまでの間に、前の結果が出ない。' }
+    { id: 'quality', g: 'fresh', title: '翻訳の質', need: 'Frame接続・アイトラ', items: [
+      { id: 't1', t: '全部大文字の英語も訳される', how: 'EXIT・SETTINGS・START GAME のような大文字だけの文字を見つめる。', exp: '日本語になる。PC・USA のような略語はそのまま。訳せない語は「」や（未訳）が付くことがある。' },
+      { id: 't2', t: 'メニューが1行ずつ訳される', how: 'VRChat のメニューなど項目が並んだものと、普通の文章を訳す。', exp: '項目は1行ずつ訳され、普通の文章の折り返しは1つの文としてつながる。' },
+      { id: 't3', t: '前の翻訳が出てこない', how: '1つ訳したあと、別の文を見つめて訳す。', exp: 'VR にも PC 画面にも前の結果が出ず、PC は「読み取り中…」になる。' }
     ] },
-    { id: 'shot', title: 'スクリーンショット', note: 'スクショの欄で「視線クイックメニューと音声でも使う」にチェックを入れてから試します。', items: [
-      { id: 's1', t: '保存できる', how: '「スクショを保存する」を押す。または「アシスタント、スクショ」と言う。', exp: '保存される。保存先は「保存先:」で選んだ場所（配布版の標準は「このPC」）。' },
-      { id: 's2', t: '一覧に出る', how: '「一覧を更新」を押し、「フォルダーを開く」で中を見る。', exp: '撮った画像が一覧とフォルダーにある。' },
-      { id: 's3', t: '削除できる', how: '一覧で1枚選んで「削除」。', exp: '選んだ画像だけが消える。' }
+    { id: 'shot', g: 'fresh', title: 'スクリーンショット', need: 'Frame接続・SteamVR', note: '「タイマー・アシスタント」タブの「スクショ（標準OFF）」で試します。', items: [
+      { id: 's1', t: 'このPC に保存できる', how: '「保存先:」で「このPC」を選び、「スクショを保存する」を押す。', exp: '保存され、一覧に自動で出る。「フォルダーを開く」で画像を見られる。' },
+      { id: 's-frame', t: 'Frameの中 に保存できる', how: '「保存先:」で「Frameの中」を選んで保存し、「一覧を更新」を押す。1枚選んで「PCに保存」。', exp: '一覧に出て、PC にコピーできる（Frame の中の画像は残る）。' },
+      { id: 's3', t: '削除できる', how: '一覧で1枚選んで「削除」。このPC・Frameの中の両方で。', exp: '選んだ画像だけが消える。' },
+      { id: 's4', t: '声で撮れる', how: '「ゴーグルの画面の保存を、視線クイックメニューと音声（「アシスタント、スクショ」「アシスタント、画面を保存」）でも使う」にチェックし、「呼びかけ音声操作をON（PC内で認識）」をONにする。「②待受中」を確かめて「アシスタント、スクショ」と言う。', exp: '声でも保存される。' }
     ] },
-    { id: 'mic', title: 'マイク（ノイズ抑制・入口音量）', note: 'マイクタブの「ノイズ抑制・入口音量」で試します。Frame の開発者モードが必要です。', items: [
-      { id: 'm1', t: 'ノイズ抑制の ON・OFF が効く', how: '周りに音がある所で「ノイズ抑制（Frame）ON」を切り替えながら話し、VRChat などで聞こえ方を比べる。', exp: 'ON のほうが周りの音が小さくなる。' },
-      { id: 'm2', t: '入口の増幅を下げられる', how: '「入口の増幅を0dBにする（84）」を押す。', exp: 'エラーが出ずに変わり、声が割れにくくなる。' },
-      { id: 'm3', t: '元に戻せる', how: '「入口の増幅を元に戻す」と「元に戻す」を押す。', exp: '試す前の状態に戻る。' }
+    { id: 'mic', g: 'fresh', title: 'ノイズ抑制・入口音量', need: 'Frame接続', note: '「マイク」タブの「ノイズ抑制・入口音量」で試します。最初と変更後に「状態を確認」を押して、実際の値を確かめてください。変更用の操作は状態確認後に使えます。', items: [
+      { id: 'm0', t: '状態を確認できる', how: '「状態を確認」を押す。', exp: '今のノイズ抑制と入口の増幅の値が表示され、ボタンが使えるようになる。' },
+      { id: 'm1', t: 'ノイズ抑制の ON・OFF が切り替わる', how: '状態がONなら「ノイズ抑制（Frame）ON」のチェックを外し、「状態を確認」でOFFになったことを確かめる。チェックを付け直し、再び「状態を確認」。周りに音がある所で聞こえ方を比べる。', exp: 'OFFに変更でき、変更前のONへ戻る。元からOFFなら変更不要の扱いでよい。聞こえ方の違いはメモに。' },
+      { id: 'm2', t: '入口の増幅を下げられる', how: '「入口の増幅を0dBにする（84）」を押し、その後「状態を確認」。', exp: '84を超えていた値だけ84になる。もともと84以下の値は変わらず、すべて84以下なら「すでに0dB以下です。変更していません。」と出る。' },
+      { id: 'm3', t: '元に戻せる', how: '入口の増幅を変更した場合は「入口の増幅を元に戻す」を押す。ノイズ抑制を変更した場合はチェックを付け直す。その後「状態を確認」。', exp: '変更した値が試す前の値に戻る。変更不要だった入口の増幅は、復元ボタンが使えなくてもよい。' },
+      { id: 'm4', t: '次回の自動適用と解除', how: '「次回も自動で適用（ノイズ抑制OFF）」と「次回も自動で適用（入口の増幅0dB）」を ON にし、操作画面を閉じて開き直す。「マイク」タブの「状態を確認」を押す。実際に変更された項目は元に戻す。変更不要で復元操作を使えない項目は、対応する「次回も自動で適用」のチェックを直接OFFにする。最後に「状態を確認」。', exp: '開いただけでは適用されず、「状態を確認」でノイズ抑制OFF・入口の増幅0dBが再適用される（元から84以下の入口値は変わらない）。復元操作をした項目の自動適用はOFFになり、変更不要の項目も手動でOFFにできる。変更した値は元に戻り、変更不要の値は保持される。' }
     ] },
-    { id: 'rec', title: '録画', dev: true, note: '配布版ではまだ使えません。開発者が実機で確認している項目です。', items: [
+    { id: 'rec', g: 'fresh', title: '録画', dev: true, note: '配布版ではまだ使えません（押しても「ゴーグルの画面を録画する方法を準備中です」と出るのが正しい動き）。開発者が実機で確認している項目で、進み具合と結果の集計には数えません。', items: [
       { id: 'r1', t: '10秒の録画', how: '「録画開始」→ 約10秒 →「録画停止」。', exp: '音つきの動画が保存され、1秒あたりの大きさが想定の範囲に収まる。' }
+    ] },
+
+    { id: 'setup', g: 'base', title: '導入・更新・削除', need: 'なし（接続確認は Frame の開発者モード）', note: '削除の確認（機能ごとの削除・まとめて削除・セットアップ本体の削除）は、ほかの機能を試し終えてから、削除してよい環境で行ってください。', items: [
+      { id: 'i1', t: 'Setup.exe で入れられる', how: 'Setup.exe をダブルクリック。青い警告が出たら「詳細情報」→「実行」。', exp: '管理者権限なしでセットアップが開く。開いただけで機能は動き出さない。' },
+      { id: 'i2', t: '機能を選んで入れられる', how: '「インストール・更新」→ 機能を選ぶ（「すべて選択」も可）→ 変更内容を見て「この計画でインストール・更新」。', exp: '実行前に変更内容が分かり、最後まで終わる。' },
+      { id: 'i3', t: 'Frame に接続できる', how: '「FrameのIPアドレス（通常は空欄で自動検出）」は空欄にする。未登録の接続なら「Frameのパスワード（登録済みの接続を使う場合は空欄）」を入力し、「接続を確認」。', exp: '自動で見つかって次へ進める。失敗したときは理由が画面に出て、やり直せる。' },
+      { id: 'i4', t: '操作画面とショートカット', how: '完了画面で「操作画面を開く」「デスクトップにショートカットを作成」。', exp: '機能ごとのタブが並んだ画面が開き、デスクトップのアイコンからも開ける。' },
+      { id: 'i5', t: '入っている機能を確認できる', how: 'セットアップを開き直し「導入済みの機能を確認・更新」。', exp: '入っている・入っていない機能が分かる。' },
+      { id: 'i9', t: '既存アイトラを新版に更新できる', how: '既存のアイトラ v1.3 がある環境で、Setup.exe の「インストール・更新」から「アイトラッキングを更新（既存のv1.3はそのまま残し、キャリブレーション対応の新版frameeyeosc 0.5.3を追加します）」を選び、計画を確認して「この計画でインストール・更新」。', exp: '明示的に選んだ場合だけ新版 frameeyeosc 0.5.3 が追加され、既存の v1.3 は残る。' },
+      { id: 'i6', t: '機能ごとに削除できる', how: '「アンインストール」で1つだけ選び「この計画で取り外す」。', exp: '選んだ機能だけ消え、ほかの機能は使える。' },
+      { id: 'i7', t: 'まとめて削除できる', how: '「スイートで管理している機能をすべて取り外す」→「この計画で取り外す」。', exp: '機能が消える。設定・接続情報・バックアップ・撮った画像は残るのが正しい動き。' },
+      { id: 'i8', t: 'セットアップ本体を削除できる', how: 'Windows の「設定」→「アプリ」から Frame Assistant をアンインストール。', exp: 'セットアップ本体が消える。' }
+    ] },
+    { id: 'common', g: 'base', title: '全体の操作', items: [
+      { id: 'c1', t: 'UI を一括 OFF・ON できる', how: '操作画面の「⏻ UIを一括OFF」を押し、もう一度押して ON に戻す。VR の電源マークでも。', exp: 'アイトラは動いたまま、表示・読み上げ・音声待受が止まり、ON で戻る（英語字幕は自動では戻らない）。' },
+      { id: 'c2', t: 'すばやく OFF・ON しても乱れない', how: '翻訳・音声・字幕を、続けて OFF → ON する。', exp: '止める前の古い訳・字幕・音声の指示が出たり実行されたりしない。' },
+      { id: 'c3', t: '閉じて開き直しても大丈夫', how: '操作画面を × で閉じて、開き直す。', exp: '設定は残り、勝手に動き出す機能がない。' },
+      { id: 'c4', t: '「OK」を押させるエラー画面が出ない', how: '試している間ずっと。', exp: 'うまくいかないときも、画面の中の文字で理由が分かる。' }
+    ] },
+    { id: 'eye', g: 'base', title: 'アイトラッキング', need: 'Frame接続・SteamVR・VRChat', note: 'VRChat の OSC を ON にし、視線・まばたきに対応したアバターで確認します。キャリブレーションと視線ドットには、更新済みの frameeyeosc 0.5.3 と SteamVR パネルが必要です。', items: [
+      { id: 'e1', t: '視線とまばたきが届く', how: '「アイトラ」タブで「ON 開始」。', exp: 'VRChat のアバターの目が視線とまばたきに合わせて動く。' },
+      { id: 'e2', t: '止められる', how: '「OFF 停止」→「状態を確認」。', exp: '止まったと表示される。' },
+      { id: 'e3', t: 'キャリブレーションできる（0.5.3）', how: '「ON 開始」で起動し、SteamVR のダッシュボードの frameeyeosc パネル →「Eye」→「Eye fit」→「Fit my eyes」で点を目で追う（約20秒）。', exp: '終わったあと、視線のずれが小さくなる。' },
+      { id: 'e4', t: '視線の点を出し入れできる', how: '「視線ドットを表示」「視線ドットを隠す」。', exp: '視界に視線の点が出たり消えたりする。' }
+    ] },
+    { id: 'hud', g: 'base', title: '時計・バッテリー', need: 'Frame接続', items: [
+      { id: 'h1', t: '時計・日付・バッテリーが出る', how: '「時計・バッテリー」タブで表示したい内容を選び「ON 開始」。', exp: '選んだ内容だけが VR 内に出て、正しい時刻・残量になっている。' },
+      { id: 'h2', t: '集中モード', how: '「集中モード（日付を隠す）」を ON にし、「設定を反映」。', exp: '日付が隠れる。' },
+      { id: 'h3', t: '位置・大きさ・濃さを変えられる', how: 'サイズ・位置・濃さを変えて「設定を反映」。', exp: 'その通りに変わる。OFF 中に反映しても勝手に表示が始まらない。' }
+    ] },
+    { id: 'tr', g: 'base', title: '翻訳・読み上げ', need: 'Frame接続・アイトラ', items: [
+      { id: 'tr1', t: '見つめて翻訳できる', how: '「翻訳・読み上げ」タブで「接続・UI表示」→「翻訳ON/OFF」で ON → 英文を約1秒見つめる。', exp: '日本語訳が VR と PC の両方に出る。' },
+      { id: 'tr2', t: '見つめる時間を変えられる', how: '「注視時間（秒）」を変え、「OFF・終了」で停止完了を待つ。「接続・UI表示」で再接続し、翻訳を ON にして試す。', exp: '反応までの時間が変わる。見続けても何度も実行されない。' },
+      { id: 'tr3', t: 'まばたき2回で選べる（試験用）', how: '「まばたき2回で選択（試験用）」を選び、「OFF・終了」で停止完了を待つ。「接続・UI表示」で再接続し、翻訳を ON にして試す。', exp: 'まばたき2回で翻訳が始まる。' },
+      { id: 'tr4', t: '行を選んで訳せる', how: '「翻訳のしかた」で「行を選んで訳す（視線で選ぶので疲れやすい）」を選ぶ。', exp: '見つめた行を選んで訳せる。' },
+      { id: 'tr5', t: '長い文のページ送り', how: '長い英文を訳し、VR の前／次のページのボタンを見つめる。', exp: 'ページが正しく切り替わる。' },
+      { id: 'tr6', t: '読み上げが聞こえる', how: '「今のページを読上げ」→ 途中で「音声停止」。', exp: '日本語の声が Frame から聞こえ、止められる。' },
+      { id: 'tr7', t: '自動読み上げ', how: '「訳したあと自動で読み上げる（全ページを順に。閉じる・新しく読み取る・一括OFFで止まります）」を ON にして訳す。', exp: '全ページを順に読み上げ、閉じる・新しく読み取る・一括 OFF で止まる。' },
+      { id: 'tr8', t: '途中で取り消せる', how: '翻訳中に「翻訳ON/OFF」で OFF。', exp: '止まり、あとから古い結果が出てこない。' },
+      { id: 'tr9', t: '声で翻訳を操作できる', how: '「呼びかけ音声操作をON（PC内で認識）」で待受にする。毎回「アシスタント」と呼びかけ、8秒以内に「翻訳オン」→「ここを翻訳」→訳の表示を待って「読み上げて」→「閉じて」の順で試す。', exp: 'その通りに動く。' }
+    ] },
+    { id: 'timer', g: 'base', title: 'タイマー・音声アシスタント', need: 'なし（声はマイク）', items: [
+      { id: 'ti1', t: 'タイマーが鳴る', how: '「タイマー・アシスタント」タブで「5分」を押す、または名前・時間・単位（秒／分）を入れて「タイマー追加」。短く試すなら10秒。', exp: '時間になると知らせが出る。' },
+      { id: 'ti2', t: '時刻を指定できる', how: '「アラーム HH:MM」に時刻を入れて「時刻指定で追加」。', exp: '指定した時刻に知らせが出る。' },
+      { id: 'ti3', t: '文字で指示できる', how: '入力欄に「10分後に休憩」などと書いて「実行」。', exp: 'タイマーが登録される。' },
+      { id: 'ti4', t: '取り消し・完了の確認', how: '1つ選んで「選択を取り消す」。鳴ったものは「完了を確認」。', exp: '選んだものだけが消える。' },
+      { id: 'ti5', t: 'VR 内表示・読み上げ', how: 'Frame に接続し SteamVR を起動して「HUDにも表示」「通知を日本語で読み上げる（標準OFF）」を ON。', exp: 'VR 内に表示され、日本語で読み上げられる。' },
+      { id: 'ti6', t: '声でタイマー', how: '「呼びかけ音声操作をON（PC内で認識）」を ON にし、「②待受中」を確かめる。毎回「アシスタント」と呼びかけ、8秒以内に「10分タイマー」。', exp: 'タイマーが登録される。' },
+      { id: 'ti7', t: '声の細かい設定', how: '「認識しきい値」を変える。「呼びかけ受理時に短い音を鳴らす」を ON。', exp: '反応のしやすさが変わり、呼びかけたときに音が鳴る。' },
+      { id: 'ti8', t: 'タイマー完了をチャットに通知できる', how: 'VRChat の OSC と「OSC連携ON（ミュート状態をHUD表示）」を ON にする。「タイマー完了をVRChatチャットへ（別途OSC連携ONが必要）」を ON にし、10秒のタイマーを追加。', exp: 'タイマー完了時に VRChat チャットへ通知が出る。' }
+    ] },
+    { id: 'cap', g: 'base', title: '英語字幕', need: 'PC の音（VR 表示は Frame接続）', items: [
+      { id: 'cp1', t: '字幕が出る', how: '「英語字幕」タブで「取り込む出力」を選び「字幕を開始」→ 英語の動画を流す。', exp: '日本語の字幕が VR 内に出る。' },
+      { id: 'cp2', t: '止められる', how: '「停止」。そのあと UI を一括 OFF → ON。', exp: '字幕が止まり、一括 ON では自動で再開しない。' },
+      { id: 'cp3', t: '見え方・負荷を変えられる', how: '「軽量モード（CPU使用を抑える）」・文字サイズ・表示位置を変える。', exp: 'その通りに変わる。' }
+    ] },
+    { id: 'mdiag', g: 'base', title: 'マイク診断・音量', need: 'Frame接続（メーター・ドングル診断はPCのみ）', items: [
+      { id: 'md1', t: '安定性チェック', how: '「マイク」→「安定性・Windows入力」→「安定性チェック(60秒)」。', exp: '最後まで動き、結果が表示される。' },
+      { id: 'md2', t: 'マイクのメーター', how: '「安定性・Windows入力」→「入力一覧」を押して入力を選び、「メーター開始」→ 話す →「停止」。', exp: '声に合わせてメーターが動く。' },
+      { id: 'md3', t: 'Frame の入力音量を一時的に下げて戻す', how: '「Frame入力音量」→「状態を確認」→ 音量を選んで「この音量に一時調整」→「元に戻す」。', exp: '変わって、元に戻る。' },
+      { id: 'md4', t: 'ドングル接続チェック', how: '「PCドングル・VRChat入力」→「ドングル接続チェック（60秒）」。', exp: '結果が表示され、設定は何も変わらない。' }
+    ] },
+    { id: 'mute', g: 'base', title: 'PC マイクのミュート', need: 'マイク（表示は Frame接続）', items: [
+      { id: 'pm1', t: 'ミュート状態が VR に出る', how: '「PCマイクのミュート状態をHUDに表示し、切替を使う（VRChatのOSCミュート表示とは別です）」を ON。', exp: 'VR 内に「MIC ON」「MIC MUTE」が正しく出る。' },
+      { id: 'pm2', t: 'ミュートを切り替えられる', how: '「PCマイクをミュートする」／「PCマイクのミュートを解除する」を押す。または「視線クイックメニュー」を ON にして、そのミュートボタンを見つめる。', exp: '切り替わり、表示も変わる。' },
+      { id: 'pm3', t: 'やめると元に戻る', how: 'ミュートにしたまま機能を OFF にする、または操作画面を閉じる。', exp: 'このアプリで変えたミュートが元に戻る。' }
+    ] },
+    { id: 'extra', g: 'base', title: '追加の表示・通知', need: '主に Frame接続', items: [
+      { id: 'x1', t: '視線クイックメニュー', how: '「視線クイックメニュー」を ON にして VR 内のボタンを見つめる（10分タイマー・表示を消す など）。', exp: '見つめたボタンが1回だけ動く。' },
+      { id: 'x2', t: 'メディア操作', how: '「メディア操作（再生/停止・曲送り・音量）を視線クイックメニューと音声に追加」を ON にする。視線なら「視線クイックメニュー」、声なら「呼びかけ音声操作をON（PC内で認識）」も ON にし、音楽を流して再生/停止・前の曲・次の曲・音量を上げる・音量を下げる・音量ミュートを試す。声は毎回「アシスタント」と呼びかけ、8秒以内に指示。', exp: '6種類とも効く（再生/停止は一時停止の切り替え）。' },
+      { id: 'x3', t: 'アプリ内通知・おやすみモード', how: '通知を ON にしてタイマーを鳴らす。次に「おやすみモード（通知を出さない）」を ON。', exp: '通知が出る。おやすみ中は出ず、解除後にまとめて出ることもない。' },
+      { id: 'x4', t: '電池の予測・残り少ない知らせ', how: '「Frame電池予測・20%/10%通知（読取り専用）」を ON にして遊ぶ。同じ電池で5分以上・3回以上の観測があり、残量が2%以上低下するまで待つ。', exp: '観測条件がそろうと残り時間の予測が出る。残量が20%・10%を上から下回ったときだけ、それぞれ1回知らせる。' },
+      { id: 'x5', t: '休憩・水分のお知らせ', how: 'SteamVR を起動し、「休憩・水分リマインダー」を ON（間隔は 45／60／90 分）。UI も一括 ON にする。', exp: 'SteamVR の起動確認中で機能が ON、UI が一括 ON の時間だけを数え、決めた間隔で知らせる。' },
+      { id: 'x6', t: 'GPU の温度・負荷', how: '「GPU温度・負荷をHUD表示（GPU0）」を ON（NVIDIA の GPU のみ）。', exp: '温度と負荷が出る。取れないときは「GPU温度・負荷：取得できません」。' }
+    ] },
+    { id: 'osc', g: 'base', title: 'VRChat 連携', need: 'VRChat（OSC を ON）', items: [
+      { id: 'o1', t: 'VRChat のミュート状態が出る', how: '「OSC連携ON（ミュート状態をHUD表示）」。', exp: 'VRChat のミュートに合わせて表示が変わる。' },
+      { id: 'o2', t: '訳をチャットに送れる', how: '「OSC連携ON（ミュート状態をHUD表示）」と「翻訳のチャット送信を許可（送るボタンを押した時だけ）」を ON → 訳したあと「チャットに送る」。', exp: '押したときだけ VRChat のチャットに出る。勝手には送らない。' },
+      { id: 'o3', t: '送信を取り消せる', how: '長い文を送っている途中で「取消」。', exp: 'まだ送っていない分が止まる。' },
+      { id: 'o4', t: '声でチャット', how: '「OSC連携ON（ミュート状態をHUD表示）」と「日本語をVRChatチャットへ送る（明示ON中だけ・音声操作と排他）」を ON にして話す。', exp: '話した日本語がチャットに出る。その間、呼びかけ操作は止まる。' }
+    ] },
+    { id: 'play', g: 'base', title: 'プレイスペース移動', need: 'SteamVR・Frameコントローラー・OVR Advanced Settings', note: 'セットアップで「プレイスペース移動」を導入します。必要なら OVR Advanced Settings の「Motion」→「Space Drag」→「Right Hand」を ON にし、X/Y/Z の軸ロックを解除してください。', items: [
+      { id: 'p1', t: '手でプレイ空間を動かせる', how: '右スティックを押し込みながら右手を動かす。左スティック押し込みでリセット。', exp: '空間が動き、リセットで元に戻る。' }
+    ] },
+    { id: 'diag', g: 'base', title: '診断レポート', items: [
+      { id: 'dg1', t: '診断レポートを保存できる', how: '「サポート用診断レポート…」→ 中身を確認 →「名前を付けて保存…」。', exp: '保存できる。IP アドレス・パスワード・名前・話した内容が入っていない。' }
     ] }
   ];
   var LABEL = { ok: 'できた', ng: 'できない', skip: '試していない' };
@@ -206,19 +308,29 @@ footer { margin-top: 40px; padding-block: 20px 40px; border-top: 1px solid var(-
   }
   function save() { try { localStorage.setItem(KEY, JSON.stringify(data)); } catch (e) {} }
   function rec(id) { if (!data[id] || typeof data[id] !== 'object') data[id] = {}; return data[id]; }
+  function st(id) { return (data[id] && data[id].s) || ''; }
   function el(tag, cls, text) { var e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; }
 
-  var list = document.getElementById('list');
+  var list = document.getElementById('list'), toc = document.getElementById('toc'), lastGroup = '';
   SECTIONS.forEach(function (s) {
+    if (s.g !== lastGroup) {
+      lastGroup = s.g;
+      list.appendChild(el('h2', 'group', GROUPS[s.g]));
+      toc.appendChild(el('span', 'toc-group', GROUPS[s.g]));
+    }
+    var link = el('a', null); link.href = '#' + s.id; link.appendChild(document.createTextNode(s.title + ' '));
+    var lc = el('span', 'toc-count'); lc.id = 'toc-' + s.id; link.appendChild(lc); toc.appendChild(link);
     var sec = el('section'); sec.id = s.id;
-    var h = el('h2', null, s.title);
-    if (s.dev) h.appendChild(el('span', 'tag dev', '開発者のみ'));
+    var h = el('h3', 'sec-title', s.title);
+    if (s.dev) h.appendChild(el('span', 'tag dev', '開発者のみ・集計対象外'));
+    if (s.need) h.appendChild(el('span', 'tag', '必要：' + s.need));
+    var sc = el('span', 'sec-count'); sc.id = 'cnt-' + s.id; h.appendChild(sc);
     sec.appendChild(h);
     if (s.note) sec.appendChild(el('p', 'sec-note', s.note));
     var ol = el('ol', 'items');
     s.items.forEach(function (it) {
       var li = el('li', 'item'); li.id = 'item-' + it.id;
-      li.appendChild(el('h3', null, it.t));
+      li.appendChild(el('h4', null, it.t));
       li.appendChild(el('p', 'how', it.how));
       var ex = el('p', 'expect'); ex.appendChild(el('b', null, '期待')); ex.appendChild(document.createTextNode(it.exp)); li.appendChild(ex);
       var ch = el('div', 'choices'); ch.setAttribute('role', 'group'); ch.setAttribute('aria-label', it.t + ' の結果');
@@ -244,52 +356,74 @@ footer { margin-top: 40px; padding-block: 20px 40px; border-top: 1px solid var(-
   });
 
   function paint(li, id) {
-    var s = (data[id] && data[id].s) || '';
+    var s = st(id);
     if (s) li.dataset.state = s; else delete li.dataset.state;
     Array.prototype.forEach.call(li.querySelectorAll('.choices button'), function (b) { b.setAttribute('aria-pressed', String(b.dataset.k === s)); });
   }
-  function allItems() { var a = []; SECTIONS.forEach(function (s) { s.items.forEach(function (it) { a.push({ s: s, it: it }); }); }); return a; }
+  function allItems(withDev) {
+    var a = [];
+    SECTIONS.forEach(function (s) { if (s.dev && !withDev) return; s.items.forEach(function (it) { a.push({ s: s, it: it }); }); });
+    return a;
+  }
   function tally() {
-    var a = allItems(), n = a.length, ok = 0, ng = 0, done = 0;
-    a.forEach(function (x) { var s = data[x.it.id] && data[x.it.id].s; if (s) done++; if (s === 'ok') ok++; if (s === 'ng') ng++; });
+    var a = allItems(false), n = a.length, ok = 0, ng = 0, done = 0;
+    a.forEach(function (x) { var s = st(x.it.id); if (s) done++; if (s === 'ok') ok++; if (s === 'ng') ng++; });
     document.getElementById('m-ok').style.width = (ok / n * 100) + '%';
     document.getElementById('m-ng').style.width = (ng / n * 100) + '%';
     document.getElementById('counts').textContent = done + ' / ' + n + ' 記入（できた ' + ok + '・できない ' + ng + '）';
+    SECTIONS.forEach(function (s) {
+      var d = s.items.filter(function (it) { return st(it.id); }).length;
+      var bad = s.items.some(function (it) { return st(it.id) === 'ng'; });
+      var cls = bad ? ' has-ng' : d === s.items.length ? ' all' : '';
+      var c = document.getElementById('cnt-' + s.id), t = document.getElementById('toc-' + s.id);
+      c.textContent = d + '/' + s.items.length; t.textContent = d + '/' + s.items.length;
+      c.className = 'sec-count' + cls; t.className = 'toc-count' + cls;
+    });
   }
   tally();
 
   function v(id) { return (document.getElementById(id).value || '').trim(); }
+  function head() {
+    return ['【チェックリスト結果】' + v('f-version') + ' 動作チェック', '【Windows】' + v('f-windows'), '【接続方法】' + v('f-conn')];
+  }
+  function lineOf(it) {
+    var r = data[it.id] || {}, line = (MARK[r.s] || '・') + ' [' + it.id + '] ' + it.t + (r.s ? '' : '（未記入）');
+    if (r.m && r.m.trim()) line += ' … ' + r.m.trim();
+    return line;
+  }
   function report() {
-    var NL = String.fromCharCode(10), out = ['【チェックリスト結果】0.6.6 動作チェック',
-      '【アプリのバージョン】' + v('f-version'), '【Windows】' + v('f-windows'), '【接続方法】' + v('f-conn')];
-    SECTIONS.forEach(function (s) {
-      out.push('■' + s.title);
-      s.items.forEach(function (it) {
-        var r = data[it.id] || {}, line = (MARK[r.s] || '・') + ' ' + it.t + (r.s ? '' : '（未記入）');
-        if (r.m && r.m.trim()) line += ' … ' + r.m.trim();
-        out.push(line);
-      });
-    });
+    var NL = String.fromCharCode(10), out = head();
+    SECTIONS.forEach(function (s) { out.push('■' + s.title + (s.dev ? '（開発者のみ・集計対象外）' : '')); s.items.forEach(function (it) { out.push(lineOf(it)); }); });
     if (v('f-note')) out.push('【全体の感想】' + v('f-note'));
     if (v('f-reply')) out.push('【連絡先】' + v('f-reply'));
     return out.join(NL);
   }
+  function summary() {
+    var NL = String.fromCharCode(10), a = allItems(false), ok = 0, ng = [], skip = 0, none = 0;
+    a.forEach(function (x) { var s = st(x.it.id); if (s === 'ok') ok++; else if (s === 'ng') ng.push(x); else if (s === 'skip') skip++; else none++; });
+    var out = head();
+    out.push('【集計】できた ' + ok + '・できない ' + ng.length + '・試していない ' + skip + '・未記入 ' + none + '（全 ' + a.length + ' 項目・開発者用の録画を除外。全文は添付）');
+    if (ng.length) { out.push('【できなかった項目】'); ng.forEach(function (x) { out.push(lineOf(x.it) + '（' + x.s.title + '）'); }); }
+    if (v('f-note')) out.push('【全体の感想】' + v('f-note'));
+    if (v('f-reply')) out.push('【連絡先】' + v('f-reply'));
+    var t = out.join(NL);
+    return t.length > 1900 ? t.slice(0, 1880) + NL + '（続きは添付の全文）' : t;
+  }
 
-  var st = document.getElementById('status');
-  function say(t, c) { st.textContent = t; st.className = c || ''; }
+  var stEl = document.getElementById('status');
+  function say(t, c) { stEl.textContent = t; stEl.className = c || ''; }
   function last() { try { return +localStorage.getItem('fa-checklist-last') || 0; } catch (e) { return 0; } }
   function mark() { try { localStorage.setItem('fa-checklist-last', String(Date.now())); } catch (e) {} }
 
   document.getElementById('send-form').addEventListener('submit', function (ev) {
     ev.preventDefault();
     if (v('f-web')) { say('送信しました。', 'ok'); return; }
-    var filled = allItems().filter(function (x) { return data[x.it.id] && data[x.it.id].s; }).length;
+    var filled = allItems(false).filter(function (x) { return st(x.it.id); }).length;
     if (!filled) { say('まだ1つも記入されていません。項目のボタンを押してから送ってください。', 'err'); return; }
     if (Date.now() - last() < 60000) { say('続けて送る場合は、1分ほど待ってから送ってください。', 'err'); return; }
-    var text = report(), fd = new FormData(), btn = document.getElementById('send-btn');
-    var body = text.length > 1900 ? text.slice(0, 1880) + String.fromCharCode(10) + '（続きは添付の全文）' : text;
-    fd.append('payload_json', JSON.stringify({ username: 'Frame Assistant チェックリスト', content: body, allowed_mentions: { parse: [] } }));
-    fd.append('files[0]', new Blob([text], { type: 'text/plain;charset=utf-8' }), 'checklist.txt');
+    var fd = new FormData(), btn = document.getElementById('send-btn');
+    fd.append('payload_json', JSON.stringify({ username: 'Frame Assistant チェックリスト', content: summary(), allowed_mentions: { parse: [] } }));
+    fd.append('files[0]', new Blob([report()], { type: 'text/plain;charset=utf-8' }), 'checklist.txt');
     btn.disabled = true; say('送信しています…');
     fetch(HOOK, { method: 'POST', body: fd })
       .then(function (r) { if (!r.ok) throw new Error(String(r.status)); mark(); say('送信しました。ご協力ありがとうございます。', 'ok'); })
