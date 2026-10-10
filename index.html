@@ -207,6 +207,9 @@ html { scroll-behavior: smooth; }
 
 <section id="download">
   <h2>ダウンロード</h2>
+  <p class="note" style="margin-bottom:16px"><b>SteamOS 0.4.5（ベータ版）に更新した方へ（10-11）</b><br>
+  ① <b>アイトラッキングが動かなくなります。</b>SteamOS の更新で視線データの形式が変わり、Frame Assistant が使っている送信部品（frameeyeosc 0.5.3）が対応していないためです。対応版を準備しています。それまでは、Frame の「設定 → システム → システム更新チャンネル」でベータ版への更新を控えてください。<br>
+  ② 更新のあと、<b>Frame がデスクトップモードで起動し、メニューに「SteamOS・VR 設定・プレイエリア・電源」しか出なくなる</b>ことがあります。アプリが消えたのではありません。デスクトップの「ゲームモードに戻る（Return to Gaming Mode）」で元に戻り、次回からもゲームモードで起動します。</p>
   <div class="dl-card">
     <div class="dl-head"><span class="ver">0.6.6 preview</span><span class="badge">試験版</span><span class="badge">2026-10-02</span></div>
     <div class="files">
@@ -356,6 +359,7 @@ Frame Assistant のホームページと説明書の内容をもとに、日本�
 <section id="news">
   <h2>お知らせ</h2>
   <ul class="news">
+    <li><span class="v">お知らせ · 10-11</span><div><b>SteamOS 0.4.5（ベータ版）でアイトラッキングが動かない件</b><span class="muted">視線データの形式が変わったためです。上流の新しい送信部品（frameeyeosc 0.7.6）で対応する版を準備しています。あわせて、更新後にデスクトップモードで起動してしまう場合の戻し方を<a href="#download">ダウンロード欄</a>に載せました。</span></div></li>
     <li><span class="v">0.6.6 · 10-02</span><div><b>音声操作の安定化、右下の翻訳ウィンドウ、スクリーンショット、ノイズ抑制</b><span class="muted">「何時ですか」「次のページへ」などの言い方を追加。翻訳結果は右下の縦長ウィンドウに出て、位置や大きさを PC で変えられます。全部大文字の英語やメニューも訳します。スクショの保存・一覧・削除、Frame のノイズ抑制と入口の増幅の調整ができます。<a href="checklist.html">動作チェックリスト</a>で試した結果を送ってください。</span></div></li>
     <li><span class="v">0.6.3 · 09-30</span><div><b>翻訳パネルのチカチカ対策</b><span class="muted">同じ画像を送り直さない・見つめている間の描き直しを減らす・表示が出入りしてもパネルの位置と大きさを変えない、などの対策をしました。</span></div></li>
     <li><span class="v">0.6.1 · 09-30</span><div><b>PC マイクのミュート表示・切り替えを追加</b><span class="muted">VR 内の表示と、見つめる・ボタン・声での切り替えに対応しました。</span></div></li>
