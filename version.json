@@ -1,6 +1,6 @@
 {
-  "latest": "0.6.6-preview",
-  "released": "2026-10-02",
+  "latest": "0.6.7-preview",
+  "released": "2026-10-11",
   "page": "https://magnolia-vr.github.io/frame-assistant/#download",
-  "notes": "音声操作の安定化・右下の翻訳ウィンドウ・スクリーンショット・ノイズ抑制"
+  "notes": "SteamOS 0.4.5 でのアイトラッキングに対応（frameeyeosc 0.7.6）"
 }

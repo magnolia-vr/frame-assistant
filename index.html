@@ -208,22 +208,22 @@ html { scroll-behavior: smooth; }
 <section id="download">
   <h2>ダウンロード</h2>
   <p class="note" style="margin-bottom:16px"><b>SteamOS 0.4.5（ベータ版）に更新した方へ（10-11）</b><br>
-  ① <b>アイトラッキングが動かなくなります。</b>SteamOS の更新で視線データの形式が変わり、Frame Assistant が使っている送信部品（frameeyeosc 0.5.3）が対応していないためです。対応版を準備しています。それまでは、Frame の「設定 → システム → システム更新チャンネル」でベータ版への更新を控えてください。<br>
+  ① <b>アイトラッキングが動かなくなった方は、0.6.7 に更新してください。</b>SteamOS の更新で視線データの受け渡し方が変わり、これまでの送信部品（frameeyeosc 0.5.3）が動かなくなっていました。0.6.7 のセットアップで「インストール・更新」を開き、<b>「アイトラッキングを更新」</b>を選ぶと、新しい送信部品（0.7.6）に入れ替わります。変更前の設定は控えてあり、「直前のアイトラ更新を戻す」で戻せます。※ 実機での確認はまだです。結果を<a href="checklist.html">チェックリスト</a>で教えてください。<br>
   ② 更新のあと、<b>Frame がデスクトップモードで起動し、メニューに「SteamOS・VR 設定・プレイエリア・電源」しか出なくなる</b>ことがあります。アプリが消えたのではありません。デスクトップの「ゲームモードに戻る（Return to Gaming Mode）」で元に戻り、次回からもゲームモードで起動します。</p>
   <div class="dl-card">
-    <div class="dl-head"><span class="ver">0.6.6 preview</span><span class="badge">試験版</span><span class="badge">2026-10-02</span></div>
+    <div class="dl-head"><span class="ver">0.6.7 preview</span><span class="badge">試験版</span><span class="badge">2026-10-11</span></div>
     <div class="files">
       <div class="file-row">
         <span class="name">Setup.exe（おすすめ）</span>
-        <span class="desc">ダブルクリックで導入できます。管理者権限は要りません。約101 MB</span>
-        <a class="btn" href="https://github.com/magnolia-vr/frame-assistant/releases/download/v0.6.6-preview/FrameAssistant-Setup-0.6.6-preview.exe">ダウンロード</a>
-        <span class="hash">SHA256 e39de79007a19864dfe432b951e8d3a659744a168afd757444d1e6dc3de26d43</span>
+        <span class="desc">ダブルクリックで導入できます。管理者権限は要りません。約102 MB</span>
+        <a class="btn" href="https://github.com/magnolia-vr/frame-assistant/releases/download/v0.6.7-preview/FrameAssistant-Setup-0.6.7-preview.exe">ダウンロード</a>
+        <span class="hash">SHA256 dd8703fb44734c89f82a5d44f3de0896a6a891654a3f36db40aedeb9c3e1095e</span>
       </div>
       <div class="file-row">
         <span class="name">ZIP 版</span>
-        <span class="desc">展開してから FrameAssistant.exe を開く形式です。約142 MB</span>
-        <a class="btn" href="https://github.com/magnolia-vr/frame-assistant/releases/download/v0.6.6-preview/Frame-Assistant-Setup-0.6.6-preview.zip">ダウンロード</a>
-        <span class="hash">SHA256 27688aaee6a4b5849345d7d6559d9f186e42e95fd6c3487e81951bc739284425</span>
+        <span class="desc">展開してから FrameAssistant.exe を開く形式です。約144 MB</span>
+        <a class="btn" href="https://github.com/magnolia-vr/frame-assistant/releases/download/v0.6.7-preview/Frame-Assistant-Setup-0.6.7-preview.zip">ダウンロード</a>
+        <span class="hash">SHA256 b80168efc420b06a6ad409cfacfd550f997f459a94a39a1dd8595ff5abe3bd5a</span>
       </div>
     </div>
     <p class="note">署名のないアプリのため、Windows の青い警告画面が出ることがあります。その場合は「詳細情報」→「実行」を押してください。Windows 11 の「スマート アプリ コントロール」が ON の PC では起動を止められることがあります。</p>
@@ -242,7 +242,7 @@ html { scroll-behavior: smooth; }
 <section id="guide">
   <h2>導入・使い方</h2>
   <ol class="steps">
-    <li><div><span class="file">FrameAssistant-Setup-0.6.6-preview.exe</span> をダブルクリックします。ZIP 版は、右クリック →「すべて展開」してから <span class="file">FrameAssistant.exe</span> を開きます。</div></li>
+    <li><div><span class="file">FrameAssistant-Setup-0.6.7-preview.exe</span> をダブルクリックします。ZIP 版は、右クリック →「すべて展開」してから <span class="file">FrameAssistant.exe</span> を開きます。</div></li>
     <li><div>「インストール・更新」を選び、使いたい機能にチェックを入れます。「すべて選択」でまとめて選べます。</div></li>
     <li><div>初めて使うときは Frame を接続し、画面の案内に従って接続を確認します。</div></li>
     <li><div>最後に表示される変更内容を確認して実行します。途中でファイルをダウンロードする機能（翻訳 約115 MB、字幕 約141 MB）は、公式の配布元から取得して中身を確認します。</div></li>
@@ -260,7 +260,7 @@ html { scroll-behavior: smooth; }
 
 <section id="testers">
   <h2>テスターの方へ</h2>
-  <p class="note" style="margin-bottom:16px"><b>動作チェックリスト（0.6.6）</b>：0.6.6 の新しい機能を試して、項目ごとに「できた・できない」を押して、そのまま開発者へ送れます。→ <a href="checklist.html">チェックリストを開く</a></p>
+  <p class="note" style="margin-bottom:16px"><b>動作チェックリスト（0.6.7）</b>：0.6.6〜0.6.7 の新しい機能を試して、項目ごとに「できた・できない」を押して、そのまま開発者へ送れます。→ <a href="checklist.html">チェックリストを開く</a></p>
   <p>開発者の環境では、次の3点をまだ確認できていません。できる範囲で試して、結果を教えてください。</p>
   <div class="test">
     <h3>1. 翻訳を実際に使ってみる</h3>
@@ -359,7 +359,8 @@ Frame Assistant のホームページと説明書の内容をもとに、日本�
 <section id="news">
   <h2>お知らせ</h2>
   <ul class="news">
-    <li><span class="v">お知らせ · 10-11</span><div><b>SteamOS 0.4.5（ベータ版）でアイトラッキングが動かない件</b><span class="muted">視線データの形式が変わったためです。上流の新しい送信部品（frameeyeosc 0.7.6）で対応する版を準備しています。あわせて、更新後にデスクトップモードで起動してしまう場合の戻し方を<a href="#download">ダウンロード欄</a>に載せました。</span></div></li>
+    <li><span class="v">0.6.7 · 10-11</span><div><b>SteamOS 0.4.5 でのアイトラッキングに対応</b><span class="muted">新しい送信部品（frameeyeosc 0.7.6）に更新できるようにしました。止まっているときは「アイトラ」タブに理由が出ます。ほかに、呼びかけ音声操作の試験機能として「スピーカーの音の回り込みを差し引く」「呼びかけ後に VRChat の音を一時的に小さくする」を追加しました（どちらも初期は OFF）。実機での確認はまだです。</span></div></li>
+    <li><span class="v">お知らせ · 10-11</span><div><b>SteamOS 0.4.5（ベータ版）でアイトラッキングが動かない件</b><span class="muted">視線データの形式が変わったためです。0.6.7 で対応しました。あわせて、更新後にデスクトップモードで起動してしまう場合の戻し方を<a href="#download">ダウンロード欄</a>に載せました。</span></div></li>
     <li><span class="v">0.6.6 · 10-02</span><div><b>音声操作の安定化、右下の翻訳ウィンドウ、スクリーンショット、ノイズ抑制</b><span class="muted">「何時ですか」「次のページへ」などの言い方を追加。翻訳結果は右下の縦長ウィンドウに出て、位置や大きさを PC で変えられます。全部大文字の英語やメニューも訳します。スクショの保存・一覧・削除、Frame のノイズ抑制と入口の増幅の調整ができます。<a href="checklist.html">動作チェックリスト</a>で試した結果を送ってください。</span></div></li>
     <li><span class="v">0.6.3 · 09-30</span><div><b>翻訳パネルのチカチカ対策</b><span class="muted">同じ画像を送り直さない・見つめている間の描き直しを減らす・表示が出入りしてもパネルの位置と大きさを変えない、などの対策をしました。</span></div></li>
     <li><span class="v">0.6.1 · 09-30</span><div><b>PC マイクのミュート表示・切り替えを追加</b><span class="muted">VR 内の表示と、見つめる・ボタン・声での切り替えに対応しました。</span></div></li>

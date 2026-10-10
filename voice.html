@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="description" content="Frame Assistant 0.6.6-previewの音声操作。認識される言い方、操作の結果、必要な設定を一覧で確認できます。">
+<meta name="description" content="Frame Assistant 0.6.7-previewの音声操作。認識される言い方、操作の結果、必要な設定を一覧で確認できます。">
 <title>音声操作の言い方一覧 | Frame Assistant</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -94,13 +94,13 @@ footer { margin-top: 40px; padding-block: 20px 40px; border-top: 1px solid var(-
 <body>
 <header class="hero">
   <div class="wrap">
-    <div class="eyebrow"><a href="./">Frame Assistant</a> · Voice 0.6.6-preview</div>
+    <div class="eyebrow"><a href="./">Frame Assistant</a> · Voice 0.6.7-preview</div>
     <h1>音声操作の言い方一覧</h1>
     <p>「アシスタント」と呼びかけて、何と言えばよいか。言い方と、動くための設定をまとめました。</p>
   </div>
 </header>
 <main class="wrap">
-<p class="note" style="margin-top:20px"><b>お知らせ（2026-10-04）</b>：0.6.6 では、Frame のマイクで話しても呼びかけ操作が認識されにくい不具合を確認し、調べています。声は届いていますが、言い方として聞き取られません。直した版を出すまでは、PC 画面のボタンや視線での操作をお使いください。</p>
+<p class="note" style="margin-top:20px"><b>お知らせ（2026-10-11）</b>：原因は、Frame のスピーカーから出る VRChat の音がマイクに回り込むことでした（VRChat の音量を0にすると、ほぼ毎回認識されます）。0.6.7 で試験機能「スピーカーの音の回り込みを差し引く」「呼びかけ後に VRChat の音を一時的に小さくする」を追加しました（どちらも初期は OFF）。<br><b>お知らせ（2026-10-04）</b>：0.6.6 では、Frame のマイクで話しても呼びかけ操作が認識されにくい不具合を確認し、調べています。声は届いていますが、言い方として聞き取られません。直した版を出すまでは、PC 画面のボタンや視線での操作をお使いください。</p>
 <nav class="toc" aria-label="音声操作の目次">
   <a href="#basics">使い方の基本</a>
   <a href="#clock">時刻・日付</a>
@@ -268,7 +268,7 @@ footer { margin-top: 40px; padding-block: 20px 40px; border-top: 1px solid var(-
   <table class="command-table" aria-label="録画の言い方">
     <thead><tr><th scope="col">言い方</th><th scope="col">何が起きるか</th><th scope="col">必要な設定</th></tr></thead>
     <tbody>
-      <tr><th scope="row" data-label="言い方"><div class="saying"><span class="phrase">録画開始</span></div><div class="saying"><span class="phrase">録画停止</span></div></th><td data-label="何が起きるか"><span class="tag">準備中</span> 0.6.6-previewの配布版ではまだ使えません。言っても録画されません。</td><td data-label="必要な設定">配布版で録画を使える設定はありません。</td></tr>
+      <tr><th scope="row" data-label="言い方"><div class="saying"><span class="phrase">録画開始</span></div><div class="saying"><span class="phrase">録画停止</span></div></th><td data-label="何が起きるか"><span class="tag">準備中</span> 0.6.7-previewの配布版ではまだ使えません。言っても録画されません。</td><td data-label="必要な設定">配布版で録画を使える設定はありません。</td></tr>
     </tbody>
   </table>
 </section>
@@ -280,7 +280,7 @@ footer { margin-top: 40px; padding-block: 20px 40px; border-top: 1px solid var(-
 </section>
 </main>
 <footer>
-  <div class="wrap"><a href="./">Frame Assistantのホームページ</a> · <a href="checklist.html">動作チェックリスト</a><br>対象：0.6.6-previewの配布版。固定の言い方38通り（録画の準備中2通りを含む）と、数字を置き換える279通りを掲載しています。</div>
+  <div class="wrap"><a href="./">Frame Assistantのホームページ</a> · <a href="checklist.html">動作チェックリスト</a><br>対象：0.6.7-previewの配布版。固定の言い方38通り（録画の準備中2通りを含む）と、数字を置き換える279通りを掲載しています。</div>
 </footer>
 </body>
 </html>
