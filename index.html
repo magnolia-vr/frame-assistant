@@ -254,6 +254,7 @@ html { scroll-behavior: smooth; }
     <li>電源ボタンで表示をまとめて OFF にすると、アイトラッキングは動かしたまま、HUD・読み上げ・音声の待受を止めます。</li>
     <li>呼びかけで操作するときは、Windows の入力マイクが <b>Steam Streaming Microphone</b> になっているか確認してください。「アシスタント」と言って一拍置き、「聞いています」と出てから話します。<a href="voice.html">認識される言い方の一覧</a>をご覧ください。</li>
     <li>削除は、セットアップを開いて「アンインストール」から、機能ごと、またはまとめて行えます。</li>
+    <li><b>ささけんさんの Steam Frame アプリ（<a href="https://frame.sasaken1102s.net/" rel="noopener">frame.sasaken1102s.net</a>）と一緒に使う場合：</b>日本語キーボード・性能表示・aux ショートカットは、そのまま一緒に使えます。ただし、視線の送信（frameeyeosc）を両方で動かすと、視線が二重に送られます。Frame Assistant の「アイトラ」でアイトラッキングを使うときは、ささけんさん版の frameeyeosc を「SteamVR と一緒に起動」しない設定にしてください。マイクの調整（frame-mic-tuner）と Frame Assistant のノイズ抑制は同じ設定を変えるので、どちらか一方だけで操作してください。</li>
   </ul>
   <p class="note">音声・字幕・認識した言葉は保存も送信もしません。マイクや Frame の設定を変えるのは、ボタンを押したときだけです。<span class="file">%LOCALAPPDATA%\FrameAssistant\backups</span> には接続先などが含まれるので、他の人に渡さないでください。</p>
 </section>
@@ -359,6 +360,7 @@ Frame Assistant のホームページと説明書の内容をもとに、日本�
 <section id="news">
   <h2>お知らせ</h2>
   <ul class="news">
+    <li><span class="v">お知らせ · 10-11</span><div><b>ささけんさんのアプリと一緒に使うときの注意を追加</b><span class="muted">視線の送信が二重にならないようにする設定と、マイクの設定の扱いを<a href="#guide">導入・使い方</a>に載せました。</span></div></li>
     <li><span class="v">0.6.7 · 10-11</span><div><b>SteamOS 0.4.5 でのアイトラッキングに対応</b><span class="muted">新しい送信部品（frameeyeosc 0.7.6）に更新できるようにしました。止まっているときは「アイトラ」タブに理由が出ます。ほかに、呼びかけ音声操作の試験機能として「スピーカーの音の回り込みを差し引く」「呼びかけ後に VRChat の音を一時的に小さくする」を追加しました（どちらも初期は OFF）。実機での確認はまだです。</span></div></li>
     <li><span class="v">お知らせ · 10-11</span><div><b>SteamOS 0.4.5（ベータ版）でアイトラッキングが動かない件</b><span class="muted">視線データの形式が変わったためです。0.6.7 で対応しました。あわせて、更新後にデスクトップモードで起動してしまう場合の戻し方を<a href="#download">ダウンロード欄</a>に載せました。</span></div></li>
     <li><span class="v">0.6.6 · 10-02</span><div><b>音声操作の安定化、右下の翻訳ウィンドウ、スクリーンショット、ノイズ抑制</b><span class="muted">「何時ですか」「次のページへ」などの言い方を追加。翻訳結果は右下の縦長ウィンドウに出て、位置や大きさを PC で変えられます。全部大文字の英語やメニューも訳します。スクショの保存・一覧・削除、Frame のノイズ抑制と入口の増幅の調整ができます。<a href="checklist.html">動作チェックリスト</a>で試した結果を送ってください。</span></div></li>
