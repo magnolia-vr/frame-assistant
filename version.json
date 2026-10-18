@@ -1,6 +1,8 @@
 {
-  "latest": "0.6.7-preview",
-  "released": "2026-10-11",
+  "latest": "0.7.0-preview",
+  "released": "2026-10-18",
   "page": "https://magnolia-vr.github.io/frame-assistant/#download",
-  "notes": "SteamOS 0.4.5 でのアイトラッキングに対応（frameeyeosc 0.7.6）"
+  "notes": "試験版。VRメニュー10ページ、独立したアラーム画面、時計左右のアラーム・タイマー表示、まばたきの手動測定、撮影、床・位置の固定。",
+  "prerelease": true,
+  "draft": false
 }

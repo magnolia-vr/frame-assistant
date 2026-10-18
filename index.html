@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="description" content="Steam Frame をPCで使うときの便利機能をまとめたWindows用の無料ツール。見つめて翻訳、英語字幕、時計・タイマー、マイク診断など。">
-<title>Frame Assistant</title>
+<meta name="description" content="Frame Assistant 0.7.0 preview（試験版）。新しいVRメニュー、時計、曜日アラーム、撮影、床・位置の固定を紹介します。">
+<title>Frame Assistant 0.7.0 preview（試験版）</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;500;700;900&family=IBM+Plex+Mono:wght@400;500&display=swap">
@@ -54,6 +54,7 @@ a { color: var(--accent); }
 .eyebrow { font-family: var(--font-mono); font-size: 12px; letter-spacing: .1em; color: var(--hud); text-transform: uppercase; }
 h1 { font-family: var(--font-display); font-weight: 900; font-size: clamp(2.2rem, 7vw, 3.4rem); line-height: 1.15; margin: 0; letter-spacing: .01em; }
 .hero .lead { color: var(--hero-dim); margin: 0; max-width: 36rem; font-size: 1.05rem; }
+.hero .note { color: var(--ink); max-width: 44rem; }
 .hud { display: flex; flex-wrap: wrap; gap: 8px 10px; font-family: var(--font-mono); font-size: 12.5px; }
 .hud span { border: 1px solid rgba(94,234,212,.45); color: var(--hud); border-radius: 4px; padding: 2px 9px; }
 .cta { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 6px; }
@@ -86,7 +87,7 @@ code, .file { font-family: var(--font-mono); font-size: .86em; background: var(-
 .files { display: grid; gap: 10px; }
 .file-row { display: grid; grid-template-columns: 1fr auto; gap: 6px 14px; align-items: center; border-top: 1px solid var(--line); padding-top: 12px; }
 .file-row .name { font-weight: 700; }
-.file-row .desc { color: var(--muted); font-size: 14.5px; grid-column: 1; }
+.file-row .desc { color: var(--muted); font-size: 14.5px; grid-column: 1; overflow-wrap: anywhere; }
 .file-row .btn { grid-column: 2; grid-row: 1 / span 2; background: var(--accent); color: var(--surface); }
 .hash { font-family: var(--font-mono); font-size: 11.5px; color: var(--muted); overflow-wrap: anywhere; grid-column: 1 / -1; }
 .note { background: var(--warn-soft); border: 1px solid var(--line); border-radius: 8px; padding: 12px 16px; font-size: 14.5px; }
@@ -164,10 +165,11 @@ html { scroll-behavior: smooth; }
 
 <header class="hero">
   <div class="wrap">
-    <div class="eyebrow">For Steam Frame · Windows</div>
+    <div class="eyebrow">Steam Frame 用・Windows 対応・0.7.0 試験版</div>
     <h1>Frame Assistant</h1>
-    <p class="lead">Steam Frame を PC につないで遊ぶときの便利機能をまとめた、Windows 用の無料ツールです。VR の中で英語を見つめて翻訳したり、英語の音声に字幕を付けたり、時計・タイマー・マイクの状態を表示したりできます。使いたい機能だけを選んで入れられます。</p>
-    <div class="hud" aria-label="主な機能"><span>見つめて翻訳</span><span>英語字幕</span><span>時計・バッテリー</span><span>タイマー・音声操作</span><span>マイク診断</span></div>
+    <p class="lead">Steam Frame を PC につないで使うための、非公式の無料ツールです。0.7 では VR メニューを1つにまとめ、時計・翻訳・撮影・床と位置の調整を VR 内で操作できるようにしました。</p>
+    <p class="note"><b>0.7.0 preview は試験版です（2026年10月18日公開）。</b>配布ファイルの組み立て時の検査は済んでいます。実機での確認は試験に協力してくださる方と進めている途中です。</p>
+    <div class="hud" aria-label="主な機能"><span>VR メニュー</span><span>視線・アナウンス翻訳</span><span>時計・アラーム</span><span>撮影</span><span>床・位置の固定</span></div>
     <div class="cta">
       <a class="btn btn-primary" href="#download">ダウンロード</a>
       <a class="btn btn-ghost" href="#guide">使い方を見る</a>
@@ -180,7 +182,7 @@ html { scroll-behavior: smooth; }
     <a href="#features">できること</a>
     <a href="#download">ダウンロード</a>
     <a href="#guide">導入・使い方</a>
-    <a href="voice.html">音声操作の言い方</a>
+    <a href="voice.html">音声の言い方（旧版参考）</a>
     <a href="#testers">テスターの方へ</a>
     <a href="checklist.html">チェックリスト</a>
     <a href="#news">お知らせ</a>
@@ -191,102 +193,71 @@ html { scroll-behavior: smooth; }
 <main class="wrap">
 
 <section id="features">
-  <h2>できること</h2>
+<h2>0.6.7 から変わったこと</h2>
+  <p>下記はソースと隔離した試験で確認した内容です。実行ファイルとヘッドセットでの確認は残っています。</p>
   <div class="features">
-    <div class="feature"><span class="tag">要 アイトラッキング</span><h3>見つめて翻訳・読み上げ</h3><p>VR 内の英語の文を見つめると、文字を読み取って日本語に訳し、VR 内のパネルに表示します。日本語で読み上げることもできます。処理はすべて PC の中で行います。</p></div>
-    <div class="feature"><span class="tag new">0.6 新機能</span><h3>英語字幕</h3><p>PC で流れている英語の音声を文字にして、日本語訳と一緒に VR 内へ表示します。音声も字幕も保存しません。</p></div>
-    <div class="feature"><span class="tag">要 Frame 接続</span><h3>アイトラッキング</h3><p>Frame の視線とまばたきを VRChat に送ります。</p></div>
-    <div class="feature"><span class="tag">要 Frame 接続</span><h3>時計・バッテリー HUD</h3><p>VR の中に時刻・日付・バッテリー残量を表示します。</p></div>
-    <div class="feature"><span class="tag">Frame なしでも可</span><h3>タイマー・音声アシスタント</h3><p>タイマーや時刻の通知を登録できます。「アシスタント」と呼びかけて「今何時」「10分タイマー」「次の曲」などを話して操作できます。</p></div>
-    <div class="feature"><span class="tag">要 Frame 接続</span><h3>マイク診断・音量調整</h3><p>Frame の内蔵マイクの音量や音声処理を点検し、音割れするときは音量を下げられます。変更前の値は保存して元に戻せます。</p></div>
-    <div class="feature"><span class="tag new">0.6.1 新機能</span><h3>PC マイクのミュート表示</h3><p>Steam Streaming Microphone がミュート中かを VR 内に表示し、見つめる・ボタン・声で切り替えます。</p></div>
-    <div class="feature"><span class="tag">要 OVR Advanced Settings</span><h3>PlaySpace 設定</h3><p>OVR Advanced Settings の Space Drag（手でプレイ空間を動かす機能）を、右手のコントローラーで使えるようにします。</p></div>
+    <article class="feature"><span class="tag">0.7 で刷新</span><h3>VR メニューを1つに</h3><p>左の一覧は英語表示の10ページです。HOME（ホーム）、ANNOUNCE（アナウンス翻訳）、GAZE（視線翻訳）、TIMER（タイマー）、ALARM（アラーム）、SYSTEM（性能）、CAPTURE（撮影）、PLAY AREA（遊ぶ範囲と位置）、SETTINGS（設定）、LAB（ラボ）を切り替えます。レーザーで指し、トリガーで押します。</p></article>
+    <article class="feature"><span class="tag">0.7 新機能</span><h3>時計と5つの色</h3><p>上の「CLOCK／時計」で表示を切り替え、水色・赤と金・緑・紫・白から色を選べます。時計・翻訳・メモの色をそろえます。TIMER の「HUD NOTICE／視界への通知」が ON なら、有効なアラームを時計の左、動作中のタイマーを右の板に表示します。アプリ内通知が OFF でも出ます。板は表示だけで、操作は VR メニューで行います。</p></article>
+    <article class="feature"><span class="tag">0.7 新機能</span><h3>アナウンス翻訳</h3><p>PC で聞こえる英語のアナウンスを日本語の字幕や読み上げで確認できます。毎回 OFF から開始し、「試しに流す」で試せます。声は Windows 標準です。</p></article>
+    <article class="feature"><span class="tag">0.7 で拡張</span><h3>見つめて自動翻訳</h3><p>文字を約1秒見つめると読み取り・翻訳します。同じ文の繰り返しを抑え、横のパネルに表示します。目の追跡が必要です。使うときに自動翻訳を ON にします。</p></article>
+    <article class="feature"><span class="tag">0.7 で拡張</span><h3>タイマー・曜日アラーム</h3><p>TIMER（タイマー）はタイマー専用で、音は「TIMER SOUND／タイマーの音・試聴」から選びます。独立した ALARM（アラーム）で一覧・追加・変更・曜日・ON/OFF・5分のスヌーズ・停止を操作し、音は「ALARM SOUND／アラームの音・試聴」から選びます。合わせて8件まで。アラームはアプリ終了後に残りません。</p></article>
+    <article class="feature"><span class="tag">0.7 で拡張</span><h3>予約撮影・水平補正</h3><p>すぐ撮る・3秒・5秒・10秒の予約と取り消し、直近4枚の確認と拡大。左右の画像を別々に水平補正し、必要なら元の画像も残せます。</p></article>
+    <article class="feature"><span class="tag">0.7 新機能</span><h3>床・位置の調整と固定</h3><p>右手で空間をずらし、値を覚える・戻す・頭の位置を固定する操作。固定は毎回 OFF、手動で使います。OVR Advanced Settings との引き継ぎと復元も用意しました。</p></article>
+    <article class="feature"><span class="tag">0.7 新機能</span><h3>メモ兼カンペ・寝落ち設定</h3><p>LAB（ラボ）からメモ表示やページ送り、自動行送りを操作。寝落ち設定は目を閉じた時間から表示を暗くし、翻訳を止め、対象アプリの音を下げます。位置固定とは別です。</p></article>
+    <article class="feature"><span class="tag">0.7 新機能</span><h3>まばたきの測定</h3><p>SETTINGS（設定）の EYE（アイトラ）→「まばたきの測定」→「測定を始める」。ふつうに3秒目を開け、ゆっくり10回まばたきして「10回終わった」を押し、結果を見て「保存」します。「前の値に戻す」「調整をやめる」で戻せます。自分で測って保存した左右の値だけを使い、自動学習はしません。</p></article>
+    <article class="feature"><span class="tag">0.7 で刷新</span><h3>独自アイトラ・補助ボタン</h3><p>独自の fa-eye で視線とまばたきを送ります。左右をそろえる強さとウインク設定を変更できます。本体の補助ボタンは1〜5回押し・長押しに動作を割り当てます。</p></article>
+    <article class="feature"><span class="tag">これまでの機能</span><h3>字幕・マイク・メディア操作</h3><p>英語字幕、マイクの診断と消音表示、音楽の再生・曲送り・音量、通知、診断レポートなども使えます。使いたい機能だけを選んで入れます。</p></article>
   </div>
-  <p class="muted" style="margin-top:14px">ほかにも、VR 内のメディア操作（再生・曲送り・音量）、アプリ内通知、翻訳結果を VRChat のチャットボックスへ送る機能、ドングル接続チェック、不具合報告用の診断レポートがあります。新しい機能はどれも最初は OFF です。</p>
+  <p class="note" style="margin-top:16px">録画・動画一覧、デスクトップの窓の表示、目合わせは使えません。VR で自由な分秒や名前のタイマーを新規に作る操作も未対応です。まばたきの測定の効果は、使う人ごとに実機で確かめてください。</p>
 </section>
 
 <section id="download">
-  <h2>ダウンロード</h2>
-  <p class="note" style="margin-bottom:16px"><b>SteamOS 0.4.5（ベータ版）に更新した方へ（10-11）</b><br>
-  ① <b>アイトラッキングが動かなくなった方は、0.6.7 に更新してください。</b>SteamOS の更新で視線データの受け渡し方が変わり、これまでの送信部品（frameeyeosc 0.5.3）が動かなくなっていました。0.6.7 のセットアップで「インストール・更新」を開き、<b>「アイトラッキングを更新」</b>を選ぶと、新しい送信部品（0.7.6）に入れ替わります。変更前の設定は控えてあり、「直前のアイトラ更新を戻す」で戻せます。※ 実機での確認はまだです。結果を<a href="checklist.html">チェックリスト</a>で教えてください。<br>
-  ② 更新のあと、<b>Frame がデスクトップモードで起動し、メニューに「SteamOS・VR 設定・プレイエリア・電源」しか出なくなる</b>ことがあります。アプリが消えたのではありません。デスクトップの「ゲームモードに戻る（Return to Gaming Mode）」で元に戻り、次回からもゲームモードで起動します。</p>
+<h2>0.7.0 preview のダウンロード予定</h2>
+  <p class="note" style="margin-bottom:16px"><b>2026年10月18日公開の試験版です。</b>安定版ではありません。ダウンロード後、下の SHA256 と一致するか確かめてください。</p>
   <div class="dl-card">
-    <div class="dl-head"><span class="ver">0.6.7 preview</span><span class="badge">試験版</span><span class="badge">2026-10-11</span></div>
+    <div class="dl-head"><span class="ver">0.7.0 preview</span><span class="badge">試験版</span><span class="badge">2026-10-18</span></div>
     <div class="files">
-      <div class="file-row">
-        <span class="name">Setup.exe（おすすめ）</span>
-        <span class="desc">ダブルクリックで導入できます。管理者権限は要りません。約102 MB</span>
-        <a class="btn" href="https://github.com/magnolia-vr/frame-assistant/releases/download/v0.6.7-preview/FrameAssistant-Setup-0.6.7-preview.exe">ダウンロード</a>
-        <span class="hash">SHA256 dd8703fb44734c89f82a5d44f3de0896a6a891654a3f36db40aedeb9c3e1095e</span>
-      </div>
-      <div class="file-row">
-        <span class="name">ZIP 版</span>
-        <span class="desc">展開してから FrameAssistant.exe を開く形式です。約144 MB</span>
-        <a class="btn" href="https://github.com/magnolia-vr/frame-assistant/releases/download/v0.6.7-preview/Frame-Assistant-Setup-0.6.7-preview.zip">ダウンロード</a>
-        <span class="hash">SHA256 b80168efc420b06a6ad409cfacfd550f997f459a94a39a1dd8595ff5abe3bd5a</span>
-      </div>
+      <div class="file-row"><span class="name">インストーラー（おすすめ）</span><span class="desc">管理者権限不要。FrameAssistant-Setup-0.7.0-preview.exe／約101 MB</span><a class="btn" href="https://github.com/magnolia-vr/frame-assistant/releases/download/v0.7.0-preview/FrameAssistant-Setup-0.7.0-preview.exe">ダウンロード</a><span class="hash">SHA256：12decb5c2cc38c249c9787bb6853c5c5e894bbe4f98345f58fa5c609bfe7a174</span></div>
+      <div class="file-row"><span class="name">ZIP 版</span><span class="desc">展開して FrameAssistant.exe を開きます。Frame-Assistant-Setup-0.7.0-preview.zip／約143 MB</span><a class="btn" href="https://github.com/magnolia-vr/frame-assistant/releases/download/v0.7.0-preview/Frame-Assistant-Setup-0.7.0-preview.zip">ダウンロード</a><span class="hash">SHA256：04a18a273f4dbbca064dd239526f3047cd27c28c6f722374c8db72135135d1b7</span></div>
     </div>
-    <p class="note">署名のないアプリのため、Windows の青い警告画面が出ることがあります。その場合は「詳細情報」→「実行」を押してください。Windows 11 の「スマート アプリ コントロール」が ON の PC では起動を止められることがあります。</p>
+    <p class="note">署名のないアプリのため Windows に警告されることがあります。配布元と照合用の値を確認してから実行してください。</p>
+    <p><a href="https://github.com/magnolia-vr/frame-assistant/releases/tag/v0.7.0-preview">0.7.0 preview の説明</a>／<a href="https://github.com/magnolia-vr/frame-assistant/releases/tag/v0.6.7-preview">以前の0.6.7試験版</a></p>
   </div>
-
-  <h3 style="margin-top:28px">動作環境</h3>
+  <h3 style="margin-top:28px">必要な環境</h3>
   <dl class="req">
-    <div><dt>PC</dt><dd>Windows 11 で動作を確認しています（Windows 10 は未確認）。Python などの追加インストールは不要です。</dd></div>
-    <div><dt>Steam Frame</dt><dd>PC に接続でき、SteamVR が動く状態にしておきます。</dd></div>
-    <div><dt>Frame の開発者モード</dt><dd>Frame 本体の設定を変える機能を入れるときに必要です。「設定 → システム」で開発者モードを ON にし、「設定 → 開発者 → Set User Password」でパスワードを設定します。タイマー・音声アシスタントだけなら不要です。</dd></div>
-    <div><dt>OVR Advanced Settings</dt><dd>PlaySpace 設定を使う場合のみ必要です。Steam で導入しておいてください。</dd></div>
-    <div><dt>日本語の音声機能</dt><dd>読み上げには Windows の日本語音声、呼びかけでの操作には Windows の日本語音声認識を使います。</dd></div>
+    <div><dt>PC</dt><dd>Windows 11（Windows 10 は未確認）。Python の追加導入は不要です。</dd></div>
+    <div><dt>Steam Frame</dt><dd>PC 接続と SteamVR。視線翻訳には利用できる目の追跡が必要です。</dd></div>
+    <div><dt>Frame の設定</dt><dd>Frame 側の部品を入れるには開発者モードと接続設定が必要です。PC だけのタイマー・音声操作には不要です。</dd></div>
+    <div><dt>日本語の音声</dt><dd>声の操作にはマイクと Windows の日本語音声認識、読み上げには日本語音声が必要です。</dd></div>
+    <div><dt>初回の準備</dt><dd>翻訳・音声認識のデータを準備するときはインターネット接続が必要です。字幕は CPU で動きます。</dd></div>
+    <div><dt>OVR との併用</dt><dd>OVR Advanced Settings を併用する場合だけ必要です。0.7 の床・位置の機能自体には必須ではありません。</dd></div>
   </dl>
 </section>
 
 <section id="guide">
-  <h2>導入・使い方</h2>
+<h2>入れ方・使い方</h2>
   <ol class="steps">
-    <li><div><span class="file">FrameAssistant-Setup-0.6.7-preview.exe</span> をダブルクリックします。ZIP 版は、右クリック →「すべて展開」してから <span class="file">FrameAssistant.exe</span> を開きます。</div></li>
-    <li><div>「インストール・更新」を選び、使いたい機能にチェックを入れます。「すべて選択」でまとめて選べます。</div></li>
-    <li><div>初めて使うときは Frame を接続し、画面の案内に従って接続を確認します。</div></li>
-    <li><div>最後に表示される変更内容を確認して実行します。途中でファイルをダウンロードする機能（翻訳 約115 MB、字幕 約141 MB）は、公式の配布元から取得して中身を確認します。</div></li>
-    <li><div>完了画面の「操作画面を開く」で、機能ごとのタブが並んだ画面が開きます。「デスクトップにショートカットを作成」を押すと、次からはアイコンから開けます。</div></li>
+    <li><div>今の版と設定をメモし、以前の配布ファイルを残します。VR で遊び終わってから、今の Frame Assistant を閉じてください。</div></li>
+    <li><div>渡された0.7のインストーラーを開きます。ZIP なら展開して FrameAssistant.exe を開きます。</div></li>
+    <li><div>「インストール・更新」で使う部品を選び、表示された計画で変更するものを確認します。選ばなかった部品は変えません。</div></li>
+    <li><div>Frame と PC をつなぎ、SteamVR の VR メニューから「Frame Assistant」を開きます。PC と Frame の部品は同じ候補で更新します。</div></li>
+    <li><div>必要な機能を1つずつ ON にします。新しい機能は基本 OFF です。保存済みの選択は引き継ぎますが、アナウンス翻訳と位置固定は毎回 OFF から始まります。撮影の水平補正は既定 ON、元画像の追加保存は既定 OFF です。</div></li>
   </ol>
-  <h3 style="margin-top:22px">使うときのポイント</h3>
-  <ul>
-    <li>VR 内の翻訳パネルや電源ボタンは、見つめるだけで操作できます。反応までの時間は標準 1 秒で、0.6〜2 秒から選べます。</li>
-    <li>電源ボタンで表示をまとめて OFF にすると、アイトラッキングは動かしたまま、HUD・読み上げ・音声の待受を止めます。</li>
-    <li>呼びかけで操作するときは、Windows の入力マイクが <b>Steam Streaming Microphone</b> になっているか確認してください。「アシスタント」と言って一拍置き、「聞いています」と出てから話します。<a href="voice.html">認識される言い方の一覧</a>をご覧ください。</li>
-    <li>削除は、セットアップを開いて「アンインストール」から、機能ごと、またはまとめて行えます。</li>
-    <li><b>ささけんさんの Steam Frame アプリ（<a href="https://frame.sasaken1102s.net/" rel="noopener">frame.sasaken1102s.net</a>）と一緒に使う場合：</b>日本語キーボード・性能表示・aux ショートカットは、そのまま一緒に使えます。ただし、視線の送信（frameeyeosc）を両方で動かすと、視線が二重に送られます。Frame Assistant の「アイトラ」でアイトラッキングを使うときは、ささけんさん版の frameeyeosc を「SteamVR と一緒に起動」しない設定にしてください。マイクの調整（frame-mic-tuner）と Frame Assistant のノイズ抑制は同じ設定を変えるので、どちらか一方だけで操作してください。</li>
-  </ul>
-  <p class="note">音声・字幕・認識した言葉は保存も送信もしません。マイクや Frame の設定を変えるのは、ボタンを押したときだけです。<span class="file">%LOCALAPPDATA%\FrameAssistant\backups</span> には接続先などが含まれるので、他の人に渡さないでください。</p>
+  <h3 style="margin-top:22px">作者さんのアプリがある場合</h3>
+  <p>作者さんのアプリ（sasaken1102r さんの frameeyeosc など）を先に入れる必要はありません。すでにある場合はセットアップが見つけ、計画に表示します。<b>選んだ対象だけ</b>控えを取り、停止・自動起動の解除・退避をします。共有設定や目合わせのデータは消しません。</p>
+  <p>PC 側の作者さんの VRCFaceTracking 用の部品も同様に、選んだものだけ控えて無効化します。読み込み済みなら VRCFaceTracking の再起動が必要です。新しい送信経路には互換確認の残件があり、まだ導入できません。置き換えだけを先に進めないでください。</p>
+  <h3 style="margin-top:22px">元に戻すには</h3>
+  <p>0.7 を止め、セットアップの「旧アプリを元に戻す（移行・更新の控えがある場合）」で対象を確認します。中断時は「中断した処理を復元」を開きます。後から変えた設定があると復元を止めて控えを残すことがあります。</p>
+  <p>PC アプリも戻すなら、0.7 を閉じて保存しておいた旧版を使います。実行ファイルを替えるだけでは Frame 側は戻りません。Windows からの削除だけでも戻りません。控えを消さず、失敗の画面を開発者へ知らせてください。</p>
+  <p class="note">音声の言い方のページは0.6.7向けの参考です。0.7で使える操作は実際の画面で確認してください。控えには接続先などが含まれるため、フォルダーごと人に渡さないでください。</p>
 </section>
 
 <section id="testers">
-  <h2>テスターの方へ</h2>
-  <p class="note" style="margin-bottom:16px"><b>動作チェックリスト（0.6.7）</b>：0.6.6〜0.6.7 の新しい機能を試して、項目ごとに「できた・できない」を押して、そのまま開発者へ送れます。→ <a href="checklist.html">チェックリストを開く</a></p>
-  <p>開発者の環境では、次の3点をまだ確認できていません。できる範囲で試して、結果を教えてください。</p>
-  <div class="test">
-    <h3>1. 翻訳を実際に使ってみる</h3>
-    <ul>
-      <li>英語の看板・メニュー・チャットを見つめて、翻訳パネルが出るか試してください。</li>
-      <li>読み上げを ON にして、日本語の音声が Frame から聞こえるか確認してください。</li>
-    </ul>
-    <p class="ask">教えてほしいこと：読み取りの正確さ、訳の自然さ、表示までの時間、見つめる操作の疲れやすさ</p>
-  </div>
-  <div class="test">
-    <h3>2. 音声認識の精度</h3>
-    <ul>
-      <li>入力マイクが Steam Streaming Microphone か確認してから、待受を ON にしてください。</li>
-      <li>静かな場所と、ゲームの音や周りの話し声がある場所の両方で試してください。</li>
-    </ul>
-    <p class="ask">教えてほしいこと：10回呼びかけて何回反応したか、話していないのに反応したことがあるか</p>
-  </div>
-  <div class="test">
-    <h3>3. まっさらな PC でのインストールと削除</h3>
-    <ul>
-      <li>このアプリを入れたことがない PC で、インストールから操作画面の起動まで進めてください。</li>
-      <li>そのあと「アンインストール」で削除し、ショートカットや機能が残っていないか見てください。</li>
-    </ul>
-    <p class="ask">教えてほしいこと：止まった手順、分かりにくかった画面、表示されたエラーの文言</p>
-  </div>
+  <h2>試してくださる方へ</h2>
+  <p class="note"><b>0.7.0 preview 用</b>：渡された候補で、<a href="checklist.html">動作チェック表</a>の「できた・できない・試していない」を記録してください。画面が開くだけでなく、操作した結果も確かめます。</p>
+  <ul style="margin-top:16px"><li>VR メニューの全ページ、時計と色の変更、タイマー・曜日アラーム。</li><li>予約撮影・取り消し・水平補正、床と位置の固定、OVR との引き継ぎ。</li><li>まばたきの測定・保存・前の値への復元、左右同期・ウインク、翻訳、声の試し聞き、つなぎ直しと終了。</li></ul>
+  <p>アラームはアプリ終了後に残りません。声で数字を聞き違える例があります。設定された時刻や時間を必ず見てください。時計の板は表示専用で、操作は VR メニューで行います。</p>
+  <p>終了時の異常終了・メモリー使用量・ちらつきや読みやすさは、実機の再確認が必要です。起きた時刻、ページ、押した順番とスクショを教えてください。名前や接続先は隠してください。</p>
   <h3 id="contact" style="margin-top:26px">質問・不具合報告</h3>
   <p>質問・不具合の報告・機能の要望は、このフォームから送れます。アカウントは要りません。届いた内容は AI（Claude）が読んで自動で回答し、数分でこのページの「回答を見る」に載ります。送信後に表示される<b>受付番号</b>を控えておいてください。開発者（まぐのりあ）にも内容が届き、必要に応じて確認します。</p>
   <form id="qa-form" class="qa" novalidate>
@@ -300,7 +271,7 @@ html { scroll-behavior: smooth; }
     </div>
     <div class="qa-grid">
       <div class="qa-row"><label for="qa-feature">どの機能で</label><input id="qa-feature" maxlength="60" placeholder="例：英語字幕"></div>
-      <div class="qa-row"><label for="qa-version">アプリのバージョン</label><input id="qa-version" maxlength="30" placeholder="例：0.6.1"></div>
+      <div class="qa-row"><label for="qa-version">アプリのバージョン</label><input id="qa-version" maxlength="30" placeholder="例：0.7.0-preview"></div>
       <div class="qa-row"><label for="qa-windows">Windows のバージョン</label><input id="qa-windows" maxlength="40" placeholder="例：Windows 11"></div>
       <div class="qa-row"><label for="qa-conn">Frame の接続方法</label><select id="qa-conn"><option>ドングル</option><option>その他</option><option>分からない</option></select></div>
     </div>
@@ -344,7 +315,7 @@ Frame Assistant のホームページと説明書の内容をもとに、日本�
 不具合の場合は、考えられる原因と、利用者が自分で試せる対処を順番に示してください。分からないことは推測せず「確認が必要」と書いてください。
 
 【種類】質問 / 不具合 / 要望 （どれか1つを残す）
-【アプリのバージョン】（例：0.6.1）
+【アプリのバージョン】（例：0.7.0-preview）
 【困っていること・知りたいこと】
 【どの機能で起きたか】（例：翻訳、英語字幕、タイマー、セットアップ）
 【試した手順】1. 2. 3.
@@ -358,18 +329,8 @@ Frame Assistant のホームページと説明書の内容をもとに、日本�
 </section>
 
 <section id="news">
-  <h2>お知らせ</h2>
-  <ul class="news">
-    <li><span class="v">お知らせ · 10-11</span><div><b>ささけんさんのアプリと一緒に使うときの注意を追加</b><span class="muted">視線の送信が二重にならないようにする設定と、マイクの設定の扱いを<a href="#guide">導入・使い方</a>に載せました。</span></div></li>
-    <li><span class="v">0.6.7 · 10-11</span><div><b>SteamOS 0.4.5 でのアイトラッキングに対応</b><span class="muted">新しい送信部品（frameeyeosc 0.7.6）に更新できるようにしました。止まっているときは「アイトラ」タブに理由が出ます。ほかに、呼びかけ音声操作の試験機能として「スピーカーの音の回り込みを差し引く」「呼びかけ後に VRChat の音を一時的に小さくする」を追加しました（どちらも初期は OFF）。実機での確認はまだです。</span></div></li>
-    <li><span class="v">お知らせ · 10-11</span><div><b>SteamOS 0.4.5（ベータ版）でアイトラッキングが動かない件</b><span class="muted">視線データの形式が変わったためです。0.6.7 で対応しました。あわせて、更新後にデスクトップモードで起動してしまう場合の戻し方を<a href="#download">ダウンロード欄</a>に載せました。</span></div></li>
-    <li><span class="v">0.6.6 · 10-02</span><div><b>音声操作の安定化、右下の翻訳ウィンドウ、スクリーンショット、ノイズ抑制</b><span class="muted">「何時ですか」「次のページへ」などの言い方を追加。翻訳結果は右下の縦長ウィンドウに出て、位置や大きさを PC で変えられます。全部大文字の英語やメニューも訳します。スクショの保存・一覧・削除、Frame のノイズ抑制と入口の増幅の調整ができます。<a href="checklist.html">動作チェックリスト</a>で試した結果を送ってください。</span></div></li>
-    <li><span class="v">0.6.3 · 09-30</span><div><b>翻訳パネルのチカチカ対策</b><span class="muted">同じ画像を送り直さない・見つめている間の描き直しを減らす・表示が出入りしてもパネルの位置と大きさを変えない、などの対策をしました。</span></div></li>
-    <li><span class="v">0.6.1 · 09-30</span><div><b>PC マイクのミュート表示・切り替えを追加</b><span class="muted">VR 内の表示と、見つめる・ボタン・声での切り替えに対応しました。</span></div></li>
-    <li><span class="v">0.6 · 09-30</span><div><b>英語字幕、アプリ内通知、メディア操作、診断レポート、Setup.exe</b><span class="muted">Setup.exe で導入できるようになりました。セットアップに「すべて選択」を追加しました。</span></div></li>
-    <li><span class="v">0.5 · 09-29</span><div><b>マイク・ドングルの点検、音声認識の改善、チャットボックス送信</b><span class="muted">使うマイクを選べるようになり、エラー後に自動で待受へ戻ります。</span></div></li>
-    <li><span class="v">0.4 · 09-29</span><div><b>タイマー・音声アシスタントを追加</b></div></li>
-  </ul>
+<h2>0.7 のお知らせ</h2>
+  <ul class="news"><li><span class="v">0.7.0 preview<br>2026-10-18</span><div><b>新しい VR メニューと時計・アラーム・撮影・位置固定</b><span class="muted">0.6.7からの変更を上にまとめました。試験版として公開しました。実機での確認は進めている途中です。</span></div></li><li><span class="v">以前の版</span><div><b>0.6.7 preview</b><span class="muted">旧版の配布物は以前のリリースに残します。旧版向けの部品の導入案内を0.7に流用しないでください。</span></div></li></ul>
 </section>
 
 </main>
