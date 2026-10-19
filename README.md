@@ -17,7 +17,7 @@ TIMER の「HUD NOTICE／視界への通知」が ON のとき、有効なアラ
 - [0.7 の動作チェック表](checklist.html)
 - [以前の0.6.7試験版](https://github.com/magnolia-vr/frame-assistant/releases/tag/v0.6.7-preview)
 
-配布ファイルは `FrameAssistant-Setup-0.7.0-preview.exe`（106,182,258 バイト、SHA256 `a8455503d082317103a55a13303324861d4d5d8583c5ba6cc14d4ae659a48a61`）と `Frame-Assistant-Setup-0.7.0-preview.zip`（150,038,131 バイト、SHA256 `6996352cc9bb34022d40d335e8c33eb50711199d2291ea8041069cb53a9801f8`）、タグは `v0.7.0-preview` です。
+配布ファイルは `FrameAssistant-Setup-0.7.0-preview.exe`（106,436,223 バイト、SHA256 `8050b7fb886152d1aa9515b1fb000d1965f441e4b98942ffe0a668bb1ba903e6`）と `Frame-Assistant-Setup-0.7.0-preview.zip`（150,387,250 バイト、SHA256 `e82f32342fa21ea0714e4f35b9f1e834863387bb03c30336acc2e067bada55da`）、タグは `v0.7.0-preview` です。
 
 作者さんのアプリ（sasaken1102r さんの frameeyeosc など）や PC 側の VRCFaceTracking 用の部品は、セットアップが検出し、選んだ対象だけ控え・停止・無効化します。控えから戻せます。共有設定は消しません。新しい VRCFaceTracking 経由の送信は確認が残り、まだ導入できません。
 
