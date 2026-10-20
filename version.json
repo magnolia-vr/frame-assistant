@@ -1,8 +1,20 @@
 {
-  "latest": "0.7.0-preview",
-  "released": "2026-10-18",
+  "latest": "0.7.1-preview",
+  "released": "2026-10-20",
   "page": "https://magnolia-vr.github.io/frame-assistant/#download",
-  "notes": "試験版。VRメニュー10ページ、独立したアラーム画面、時計左右のアラーム・タイマー表示、まばたきの手動測定、撮影、床・位置の固定。",
+  "notes": "試験版。PC画面刷新、Discord通知、会った人の記録、移動設定、Frameの住所探索。時計HUD・SYSTEMの電池残量をSteamVR優先にし、声の撮影の案内と録画停止を修正。",
   "prerelease": true,
-  "draft": false
+  "draft": false,
+  "files": [
+    {
+      "name": "FrameAssistant-Setup-0.7.1-preview.exe",
+      "size": 107331568,
+      "sha256": "a3de1595f9f4a513853db21bb89e1b836a4cadd8b60ca72b2274ab26f4b28e2e"
+    },
+    {
+      "name": "Frame-Assistant-Setup-0.7.1-preview.zip",
+      "size": 151548305,
+      "sha256": "b80f789dd7541af5dd9a147582c3adf690da5bbe033197f19fc71af5154be977"
+    }
+  ]
 }

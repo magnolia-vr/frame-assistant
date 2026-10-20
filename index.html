@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="description" content="Frame Assistant 0.7.0 preview（試験版）。新しいVRメニュー、時計、曜日アラーム、撮影、床・位置の固定を紹介します。">
-<title>Frame Assistant 0.7.0 preview（試験版）</title>
+<meta name="description" content="Frame Assistant 0.7.1 preview（試験版）。新しいVRメニュー、時計、曜日アラーム、撮影、床・位置の固定、Discord の通知、VRChat で会った人の記録を紹介します。">
+<title>Frame Assistant 0.7.1 preview（試験版）</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;500;700;900&family=IBM+Plex+Mono:wght@400;500&display=swap">
@@ -165,10 +165,10 @@ html { scroll-behavior: smooth; }
 
 <header class="hero">
   <div class="wrap">
-    <div class="eyebrow">Steam Frame 用・Windows 対応・0.7.0 試験版</div>
+    <div class="eyebrow">Steam Frame 用・Windows 対応・0.7.1 試験版</div>
     <h1>Frame Assistant</h1>
     <p class="lead">Steam Frame を PC につないで使うための、非公式の無料ツールです。0.7 では VR メニューを1つにまとめ、時計・翻訳・撮影・床と位置の調整を VR 内で操作できるようにしました。</p>
-    <p class="note"><b>0.7.0 preview は試験版です（2026年10月18日公開）。</b>配布ファイルの組み立て時の検査は済んでいます。実機での確認は試験に協力してくださる方と進めている途中です。</p>
+    <p class="note"><b>0.7.1 preview は試験版です（2026年10月20日公開）。</b>配布ファイルの組み立て時の検査は済んでいます。実機での確認は試験に協力してくださる方と進めている途中です。</p>
     <div class="hud" aria-label="主な機能"><span>VR メニュー</span><span>視線・アナウンス翻訳</span><span>時計・アラーム</span><span>撮影</span><span>床・位置の固定</span></div>
     <div class="cta">
       <a class="btn btn-primary" href="#download">ダウンロード</a>
@@ -192,9 +192,23 @@ html { scroll-behavior: smooth; }
 
 <main class="wrap">
 
+<section id="new071">
+<h2>0.7.1 で変わったこと</h2>
+  <div class="features">
+    <article class="feature"><span class="tag">0.7.1 で刷新</span><h3>PC アプリの画面</h3><p>VR メニューと同じ見た目になりました。左の一覧（12ページ）から選び、中身は2列のカードで並びます。どのページもマウスのホイールでスクロールできます。</p></article>
+    <article class="feature"><span class="tag">0.7.1 新機能</span><h3>Discord の通知を視界に</h3><p>Discord が Windows に出した通知を、Frame の視界に「送り主：本文」で出します（最初から ON）。「本文を隠して送り主だけ出す」も選べます。通知の内容は保存しません。</p></article>
+    <article class="feature"><span class="tag">0.7.1 新機能</span><h3>VRChat で会った人の記録と印</h3><p>パブリック以外（誰でも入れるグループを含む）で一緒になった人を、その PC の中だけに記録します（最初は OFF）。「接客した」「キャスト仲間」「フレンド」などの印を付け、印ごとに来たときに知らせるかを選べます。印のない人は3日で消えます。VRChat のログの設定を「Full」にして使います。</p></article>
+    <article class="feature"><span class="tag">0.7.1 で拡張</span><h3>移動の手と長押しの秒数</h3><p>PLAY AREA で、移動に使う手を右・左から選べます。戻す操作は反対の手の長押しで、0.5・1・2・3 秒・「長押しで戻さない」から選べます。</p></article>
+    <article class="feature"><span class="tag">0.7.1 で拡張</span><h3>Frame の住所が変わっても</h3><p>登録した住所でつながらないとき、同じネットワークの中から登録済みの Frame を探し直します。識別鍵が完全に一致したときだけ接続し、パスワードやログインは使いません。</p></article>
+    <article class="feature"><span class="tag">0.7.1 で変更</span><h3>アプリ内の通知を最初から ON</h3><p>視界への通知を時計の表示と切り離しました。時計を消していても出ます。配信・録画中に映したくない場合は OFF にしてください。</p></article>
+    <article class="feature"><span class="tag">0.7.1 で修正</span><h3>電池残量の表示</h3><p>時計のHUDとVRメニューのSYSTEMは、Frame本体（SteamVR）の残量を優先します。PCの電池予測・20%/10%通知は本体内部の値を使うため、表示とずれることがあります。</p></article>
+    <article class="feature"><span class="tag">0.7.1 で修正</span><h3>声のスクショ・録画</h3><p>使えない理由を具体的に案内します。全体電源と音声待受をONにし、起動ごとにPCの「スクショ・録画」で対象の視線・音声をONにしてください。Frame側の撮影準備も必要です。録画開始後の個別OFFでも、声で停止できます。</p></article>
+  </div>
+</section>
+
 <section id="features">
 <h2>0.6.7 から変わったこと</h2>
-  <p>下記はソースと隔離した試験で確認した内容です。実行ファイルとヘッドセットでの確認は残っています。</p>
+  <p>配布ファイルの組み立て時の検査は済んでいます。実機で操作した結果は、利用者と引き続き確認しています。</p>
   <div class="features">
     <article class="feature"><span class="tag">0.7 で刷新</span><h3>VR メニューを1つに</h3><p>左の一覧は英語表示の10ページです。HOME（ホーム）、ANNOUNCE（アナウンス翻訳）、GAZE（視線翻訳）、TIMER（タイマー）、ALARM（アラーム）、SYSTEM（性能）、CAPTURE（撮影）、PLAY AREA（遊ぶ範囲と位置）、SETTINGS（設定）、LAB（ラボ）を切り替えます。レーザーで指し、トリガーで押します。</p></article>
     <article class="feature"><span class="tag">0.7 新機能</span><h3>時計と5つの色</h3><p>上の「CLOCK／時計」で表示を切り替え、水色・赤と金・緑・紫・白から色を選べます。時計・翻訳・メモの色をそろえます。TIMER の「HUD NOTICE／視界への通知」が ON なら、有効なアラームを時計の左、動作中のタイマーを右の板に表示します。アプリ内通知が OFF でも出ます。板は表示だけで、操作は VR メニューで行います。</p></article>
@@ -208,20 +222,20 @@ html { scroll-behavior: smooth; }
     <article class="feature"><span class="tag">0.7 で刷新</span><h3>独自アイトラ・補助ボタン</h3><p>独自の fa-eye で視線とまばたきを送ります。左右をそろえる強さとウインク設定を変更できます。本体の補助ボタンは1〜5回押し・長押しに動作を割り当てます。</p></article>
     <article class="feature"><span class="tag">これまでの機能</span><h3>字幕・マイク・メディア操作</h3><p>英語字幕、マイクの診断と消音表示、音楽の再生・曲送り・音量、通知、診断レポートなども使えます。使いたい機能だけを選んで入れます。</p></article>
   </div>
-  <p class="note" style="margin-top:16px">録画・動画一覧、デスクトップの窓の表示、目合わせは使えません。VR で自由な分秒や名前のタイマーを新規に作る操作も未対応です。まばたきの測定の効果は、使う人ごとに実機で確かめてください。</p>
+  <p class="note" style="margin-top:16px">撮影した写真・動画を PC の好きなフォルダーへ保存する機能は次の版の予定です。デスクトップの窓の表示、目合わせは使えません。VR で自由な分秒や名前のタイマーを新規に作る操作も未対応です。まばたきの測定の効果は、使う人ごとに実機で確かめてください。</p>
 </section>
 
 <section id="download">
-<h2>0.7.0 preview のダウンロード予定</h2>
-  <p class="note" style="margin-bottom:16px"><b>2026年10月18日公開の試験版です。</b>安定版ではありません。ダウンロード後、下の SHA256 と一致するか確かめてください。</p>
+<h2>0.7.1 preview のダウンロード</h2>
+  <p class="note" style="margin-bottom:16px"><b>2026年10月20日公開の試験版です。</b>安定版ではありません。ダウンロード後、下の SHA256 と一致するか確かめてください。</p>
   <div class="dl-card">
-    <div class="dl-head"><span class="ver">0.7.0 preview</span><span class="badge">試験版</span><span class="badge">2026-10-18</span></div>
+    <div class="dl-head"><span class="ver">0.7.1 preview</span><span class="badge">試験版</span><span class="badge">2026-10-20</span></div>
     <div class="files">
-      <div class="file-row"><span class="name">インストーラー（おすすめ）</span><span class="desc">管理者権限不要。FrameAssistant-Setup-0.7.0-preview.exe／約101 MB</span><a class="btn" href="https://github.com/magnolia-vr/frame-assistant/releases/download/v0.7.0-preview/FrameAssistant-Setup-0.7.0-preview.exe">ダウンロード</a><span class="hash">SHA256：8050b7fb886152d1aa9515b1fb000d1965f441e4b98942ffe0a668bb1ba903e6</span></div>
-      <div class="file-row"><span class="name">ZIP 版</span><span class="desc">展開して FrameAssistant.exe を開きます。Frame-Assistant-Setup-0.7.0-preview.zip／約143 MB</span><a class="btn" href="https://github.com/magnolia-vr/frame-assistant/releases/download/v0.7.0-preview/Frame-Assistant-Setup-0.7.0-preview.zip">ダウンロード</a><span class="hash">SHA256：e82f32342fa21ea0714e4f35b9f1e834863387bb03c30336acc2e067bada55da</span></div>
+      <div class="file-row"><span class="name">インストーラー（おすすめ）</span><span class="desc">管理者権限不要。FrameAssistant-Setup-0.7.1-preview.exe／約102 MB（107,331,568 バイト）</span><a class="btn" href="https://github.com/magnolia-vr/frame-assistant/releases/download/v0.7.1-preview/FrameAssistant-Setup-0.7.1-preview.exe">ダウンロード</a><span class="hash">SHA256：a3de1595f9f4a513853db21bb89e1b836a4cadd8b60ca72b2274ab26f4b28e2e</span></div>
+      <div class="file-row"><span class="name">ZIP 版</span><span class="desc">展開して FrameAssistant.exe を開きます。Frame-Assistant-Setup-0.7.1-preview.zip／約145 MB（151,548,305 バイト）</span><a class="btn" href="https://github.com/magnolia-vr/frame-assistant/releases/download/v0.7.1-preview/Frame-Assistant-Setup-0.7.1-preview.zip">ダウンロード</a><span class="hash">SHA256：b80f789dd7541af5dd9a147582c3adf690da5bbe033197f19fc71af5154be977</span></div>
     </div>
     <p class="note">署名のないアプリのため Windows に警告されることがあります。配布元と照合用の値を確認してから実行してください。</p>
-    <p><a href="https://github.com/magnolia-vr/frame-assistant/releases/tag/v0.7.0-preview">0.7.0 preview の説明</a>／<a href="https://github.com/magnolia-vr/frame-assistant/releases/tag/v0.6.7-preview">以前の0.6.7試験版</a></p>
+    <p><a href="https://github.com/magnolia-vr/frame-assistant/releases/tag/v0.7.1-preview">0.7.1 preview の説明</a>／<a href="https://github.com/magnolia-vr/frame-assistant/releases/tag/v0.7.0-preview">0.7.0 preview の説明</a>／<a href="https://github.com/magnolia-vr/frame-assistant/releases/tag/v0.6.7-preview">以前の0.6.7試験版</a></p>
   </div>
   <h3 style="margin-top:28px">必要な環境</h3>
   <dl class="req">
@@ -254,7 +268,7 @@ html { scroll-behavior: smooth; }
 
 <section id="testers">
   <h2>試してくださる方へ</h2>
-  <p class="note"><b>0.7.0 preview 用</b>：渡された候補で、<a href="checklist.html">動作チェック表</a>の「できた・できない・試していない」を記録してください。画面が開くだけでなく、操作した結果も確かめます。</p>
+  <p class="note"><b>0.7.1 preview 用</b>：渡された候補で、<a href="checklist.html">動作チェック表</a>の「できた・できない・試していない」を記録してください。画面が開くだけでなく、操作した結果も確かめます。</p>
   <ul style="margin-top:16px"><li>VR メニューの全ページ、時計と色の変更、タイマー・曜日アラーム。</li><li>予約撮影・取り消し・水平補正、床と位置の固定、OVR との引き継ぎ。</li><li>まばたきの測定・保存・前の値への復元、左右同期・ウインク、翻訳、声の試し聞き、つなぎ直しと終了。</li></ul>
   <p>アラームはアプリ終了後に残りません。声で数字を聞き違える例があります。設定された時刻や時間を必ず見てください。時計の板は表示専用で、操作は VR メニューで行います。</p>
   <p>終了時の異常終了・メモリー使用量・ちらつきや読みやすさは、実機の再確認が必要です。起きた時刻、ページ、押した順番とスクショを教えてください。名前や接続先は隠してください。</p>
@@ -271,7 +285,7 @@ html { scroll-behavior: smooth; }
     </div>
     <div class="qa-grid">
       <div class="qa-row"><label for="qa-feature">どの機能で</label><input id="qa-feature" maxlength="60" placeholder="例：英語字幕"></div>
-      <div class="qa-row"><label for="qa-version">アプリのバージョン</label><input id="qa-version" maxlength="30" placeholder="例：0.7.0-preview"></div>
+      <div class="qa-row"><label for="qa-version">アプリのバージョン</label><input id="qa-version" maxlength="30" placeholder="例：0.7.1-preview"></div>
       <div class="qa-row"><label for="qa-windows">Windows のバージョン</label><input id="qa-windows" maxlength="40" placeholder="例：Windows 11"></div>
       <div class="qa-row"><label for="qa-conn">Frame の接続方法</label><select id="qa-conn"><option>ドングル</option><option>その他</option><option>分からない</option></select></div>
     </div>
@@ -315,7 +329,7 @@ Frame Assistant のホームページと説明書の内容をもとに、日本�
 不具合の場合は、考えられる原因と、利用者が自分で試せる対処を順番に示してください。分からないことは推測せず「確認が必要」と書いてください。
 
 【種類】質問 / 不具合 / 要望 （どれか1つを残す）
-【アプリのバージョン】（例：0.7.0-preview）
+【アプリのバージョン】（例：0.7.1-preview）
 【困っていること・知りたいこと】
 【どの機能で起きたか】（例：翻訳、英語字幕、タイマー、セットアップ）
 【試した手順】1. 2. 3.
@@ -330,7 +344,7 @@ Frame Assistant のホームページと説明書の内容をもとに、日本�
 
 <section id="news">
 <h2>0.7 のお知らせ</h2>
-  <ul class="news"><li><span class="v">0.7.0 preview<br>2026-10-18</span><div><b>新しい VR メニューと時計・アラーム・撮影・位置固定</b><span class="muted">0.6.7からの変更を上にまとめました。試験版として公開しました。実機での確認は進めている途中です。</span></div></li><li><span class="v">以前の版</span><div><b>0.6.7 preview</b><span class="muted">旧版の配布物は以前のリリースに残します。旧版向けの部品の導入案内を0.7に流用しないでください。</span></div></li></ul>
+  <ul class="news"><li><span class="v">0.7.1 preview<br>2026-10-20</span><div><b>PC アプリの新しい画面・Discord の通知・会った人の記録・移動の設定</b><span class="muted">上の「0.7.1 で変わったこと」にまとめました。試験版として公開しました。実機での確認は進めている途中です。</span></div></li><li><span class="v">0.7.0 preview<br>2026-10-18</span><div><b>新しい VR メニューと時計・アラーム・撮影・位置固定</b><span class="muted">0.6.7からの変更を上にまとめました。試験版として公開しました。実機での確認は進めている途中です。</span></div></li><li><span class="v">以前の版</span><div><b>0.6.7 preview</b><span class="muted">旧版の配布物は以前のリリースに残します。旧版向けの部品の導入案内を0.7に流用しないでください。</span></div></li></ul>
 </section>
 
 </main>
