@@ -1,20 +1,20 @@
 {
-  "latest": "0.7.1-preview",
-  "released": "2026-10-20",
+  "latest": "0.7.2-preview",
+  "released": "2026-10-28",
   "page": "https://magnolia-vr.github.io/frame-assistant/#download",
-  "notes": "試験版。PC画面刷新、Discord通知、会った人の記録、移動設定、Frameの住所探索。時計HUD・SYSTEMの電池残量をSteamVR優先にし、声の撮影の案内と録画停止を修正。",
+  "notes": "試験版。VRメニューの選んだ枠の修正、HUDの配置をFrameだけで、キーボードの種類とコピー・貼り付け、指先の操作（試し）、スクショ・録画をPCへ自動で、タイマー・アラームの音、PlaySpaceの復帰、Frame初期化後の登録し直し、アンインストーラー。VRのブラウザは準備中。",
   "prerelease": true,
   "draft": false,
   "files": [
     {
-      "name": "FrameAssistant-Setup-0.7.1-preview.exe",
-      "size": 107331568,
-      "sha256": "a3de1595f9f4a513853db21bb89e1b836a4cadd8b60ca72b2274ab26f4b28e2e"
+      "name": "FrameAssistant-Setup-0.7.2-preview.exe",
+      "size": 350806009,
+      "sha256": "ef81c82fd15a7b23d533af37d994f56885971b88c3bea8242e4357bda91f42d7"
     },
     {
-      "name": "Frame-Assistant-Setup-0.7.1-preview.zip",
-      "size": 151548305,
-      "sha256": "b80f789dd7541af5dd9a147582c3adf690da5bbe033197f19fc71af5154be977"
+      "name": "Frame-Assistant-Setup-0.7.2-preview.zip",
+      "size": 488770451,
+      "sha256": "0381c670202100ff63fb36ec252ceed6ce1251d2fa2be02b4f35f068e9cb1af9"
     }
   ]
 }
