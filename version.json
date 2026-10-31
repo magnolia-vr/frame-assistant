@@ -1,20 +1,20 @@
 {
-  "latest": "0.7.2-preview",
-  "released": "2026-10-28",
+  "latest": "0.7.3-preview",
+  "released": "2026-10-31",
   "page": "https://magnolia-vr.github.io/frame-assistant/#download",
-  "notes": "試験版。VRメニューの選んだ枠の修正、HUDの配置をFrameだけで、キーボードの種類とコピー・貼り付け、指先の操作（試し）、スクショ・録画をPCへ自動で、タイマー・アラームの音、PlaySpaceの復帰、Frame初期化後の登録し直し、アンインストーラー。VRのブラウザは準備中。",
+  "notes": "試験版。Frame 初期化後の入れ直しと VR メニュー接続の修正、通知・HUD の配置・手の甲の操作パネルの変更。アンインストールは模擬の試験まで。",
   "prerelease": true,
   "draft": false,
   "files": [
     {
-      "name": "FrameAssistant-Setup-0.7.2-preview.exe",
-      "size": 350806009,
-      "sha256": "ef81c82fd15a7b23d533af37d994f56885971b88c3bea8242e4357bda91f42d7"
+      "name": "FrameAssistant-Setup-0.7.3-preview.exe",
+      "size": 350902427,
+      "sha256": "68e8991e84f84f0b77e9d8164d785ced3ed8d87e8a1ec8c6089d8367bd4ed33d"
     },
     {
-      "name": "Frame-Assistant-Setup-0.7.2-preview.zip",
-      "size": 488770451,
-      "sha256": "0381c670202100ff63fb36ec252ceed6ce1251d2fa2be02b4f35f068e9cb1af9"
+      "name": "Frame-Assistant-Setup-0.7.3-preview.zip",
+      "size": 488975079,
+      "sha256": "5ad5ae370433f4797edc37f27ded9f9378a9383a65459541a314cf4e40069eed"
     }
   ]
 }
